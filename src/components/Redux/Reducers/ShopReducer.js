@@ -8,7 +8,8 @@ import {
   PAYMENT_STACK,
   PAYMENT_BANK,
   PAYMENT_CHECK,
-  CHANGEPAYMENT_TYPES
+  CHANGEPAYMENT_TYPES,
+  GET_PRODUCTS
 } from "../Actions/Types";
 
 const initialState = {
@@ -106,7 +107,8 @@ const initialState = {
   addedCart: [],
   total: "",
   moveToCart: false,
-  paymentType: ""
+  paymentType: "",
+  products: []
 };
 
 const ShopReducer = (state = initialState, action) => {
@@ -140,6 +142,10 @@ const ShopReducer = (state = initialState, action) => {
 
     case CHANGEPAYMENT_TYPES:
       return { ...state, paymentType: action.payload };
+
+    case GET_PRODUCTS:
+
+      return{...state, products: action.payload}
 
     default:
       return state;
