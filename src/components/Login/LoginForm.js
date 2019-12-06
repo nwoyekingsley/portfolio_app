@@ -49,7 +49,7 @@ class LoginForm extends Component {
                               className="custom-control-label"
                               htmlFor="customCheck"
                             >
-                              Remember Me
+                              Re Remember Me
                             </label>
                           </div>
                         </div>
