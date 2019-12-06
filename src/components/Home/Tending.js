@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {getallProducts} from '../Redux/Actions'
+import { getallProducts } from "../Redux/Actions";
 
 class Tending extends Component {
-componentWillMount(){
-  this.props.getallProducts()
-}
+  componentWillMount() {
+    this.props.getallProducts();
+  }
 
   render() {
-    const {products} = this.props;
-    
+    const { products } = this.props;
+
     return (
       <section className="ftco-section ftco-product">
         <div className="container">
@@ -45,7 +45,9 @@ componentWillMount(){
                             </Link>
                             <div className="text pt-3 px-3">
                               <h3>
-                                <Link to={`/productsingle/${product.ProductId}`}>
+                                <Link
+                                  to={`/productsingle/${product.ProductId}`}
+                                >
                                   {product.name}
                                 </Link>
                               </h3>
@@ -86,11 +88,10 @@ componentWillMount(){
 }
 
 const mapStateToProps = state => {
-  const {products} = state.Shop;
+  const { products } = state.Shop;
   return {
-   
     products
   };
 };
 
-export default connect(mapStateToProps, {getallProducts})(Tending);
+export default connect(mapStateToProps, { getallProducts })(Tending);
