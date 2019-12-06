@@ -5,72 +5,95 @@ import { loginCustomer } from "../Redux/Actions";
 
 class LoginForm extends Component {
   render() {
-    const { email, password } = this.props;
     return (
-      <section className="login_box_area p_120">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="login_box_img">
-                <img className="img-fluid" src="/Assets/img/login.jpg" alt="" />
-                <div className="hover">
-                  <h4>New to our website?</h4>
-                  <p>
-                    There are advances being made in science and technology
-                    everyday, and a good example of this is the
-                  </p>
-                  <a className="main_btn" href="registration.html">
-                    Create an Account
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="login_form_inner">
-                <h3>Log in to enter</h3>
-                <form className="row login_form">
-                  <div className="col-md-12 form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="name"
-                      name="name"
-                      placeholder="Username"
-                    />
-                  </div>
-                  <div className="col-md-12 form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="name"
-                      name="name"
-                      placeholder="Password"
-                    />
-                  </div>
-                  <div className="col-md-12 form-group">
-                    <div className="creat_account">
-                      <input type="checkbox" id="f-option2" name="selector" />
-                      <label htmlFor="f-option2">Keep me logged in</label>
+      <div className="container">
+        {/* Outer Row */}
+        <div className="row justify-content-center">
+          <div className="col-xl-10 col-lg-12 col-md-9">
+            <div className="card o-hidden border-0 shadow-lg my-5">
+              <div className="card-body p-0">
+                {/* Nested Row within Card Body */}
+                <div className="row">
+                  <div className="col-lg-6 d-none d-lg-block bg-login-image" />
+                  <div className="col-lg-6">
+                    <div className="p-5">
+                      <div className="text-center">
+                        <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                      </div>
+                      <form className="user">
+                        <div className="form-group">
+                          <input
+                            type="email"
+                            className="form-control form-control-user"
+                            id="exampleInputEmail"
+                            aria-describedby="emailHelp"
+                            placeholder="Enter Email Address..."
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="password"
+                            className="form-control form-control-user"
+                            id="exampleInputPassword"
+                            placeholder="Password"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <div className="custom-control custom-checkbox small">
+                            <input
+                              type="checkbox"
+                              className="custom-control-input"
+                              id="customCheck"
+                            />
+                            <label
+                              className="custom-control-label"
+                              htmlFor="customCheck"
+                            >
+                              Remember Me
+                            </label>
+                          </div>
+                        </div>
+                        <Link
+                          to="/"
+                          className="btn btn-primary btn-user btn-block"
+                        >
+                          Login
+                        </Link>
+                        <hr />
+                        <Link
+                          to="/"
+                          className="btn btn-google btn-user btn-block"
+                        >
+                          <i className="fab fa-google fa-fw" /> Login with
+                          Google
+                        </Link>
+                        <Link
+                          to="/"
+                          className="btn btn-facebook btn-user btn-block"
+                        >
+                          <i className="fab fa-facebook-f fa-fw" /> Login with
+                          Facebook
+                        </Link>
+                      </form>
+                      <hr />
+                      <div className="text-center">
+                        <Link className="small" to="/forgotpassword">
+                          Forgot Password?
+                        </Link>
+                      </div>
+                      <div className="text-center">
+                        <Link className="small" to="/register">
+                          Create an Account!
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-12 form-group">
-                    <button
-                      className="btn submit_btn"
-                      onClick={e => {
-                        e.preventDefault();
-                        this.props.loginCustomer(email, password);
-                      }}
-                    >
-                      Log In
-                    </button>
-                    <Link to="#">Forgot Password?</Link>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 }

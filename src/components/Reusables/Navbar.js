@@ -47,11 +47,25 @@ class Navbar extends Component {
                   Contact
                 </Link>
               </li>
-              {/* <li className="nav-item">
-                <Link to="/login" className="nav-link">
+              <li className="nav-item dropdown">
+                <Link
+                  className="nav-link dropdown-toggle"
+                  to="#"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   Login
                 </Link>
-              </li> */}
+                <div className="dropdown-menu" aria-labelledby="dropdown04">
+                  <Link className="dropdown-item" to="/login">
+                    LOGIN
+                  </Link>
+                  <Link className="dropdown-item" to="/register">
+                    REGISTER
+                  </Link>
+                </div>
+              </li>
               <li className="nav-item cta cta-colored">
                 <Link to="/cart" className="nav-link">
                   <span className="icon-shopping_cart">{value}</span>

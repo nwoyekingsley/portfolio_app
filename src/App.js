@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Loader from "./components/Loader/Loader";
+// import Loader from "./components/Loader/Loader";
 import Home from "./components/Home";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
+import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
 import Blog from "./components/Blog";
 import Cart from "./components/Cart";
 import Shop from "./components/Shop";
@@ -22,11 +24,13 @@ function App() {
     <div>
       <Provider store={store}>
         <Router>
-          <Loader />
+          {/* <Loader /> */}
           <Route exact path="/" component={Home} />
           <Route exact path="/about" component={About} />
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/forgotpassword" component={ForgotPassword} />
           <Route exact path="/blog" component={Blog} />
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/shop" component={Shop} />
