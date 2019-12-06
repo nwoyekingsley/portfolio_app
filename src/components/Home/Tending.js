@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import {getallProducts} from '../Redux/Actions'
 
 class Tending extends Component {
+componentWillMount(){
+  this.props.getallProducts()
+}
+
   render() {
-    const { shopData } = this.props;
+    const {products} = this.props;
+    
     return (
       <section className="ftco-section ftco-product">
         <div className="container">
@@ -17,40 +23,40 @@ class Tending extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="product-slider owl-carousel ftco-animate">
-                {shopData.length > 0
-                  ? shopData.map(shop => {
+                {products.length > 0
+                  ? products.map(product => {
                       return (
-                        <div key={shop.id} className="item">
+                        <div key={product.ProductId} className="item">
                           <div className="product">
                             <Link
-                              to={`/productsingle/${shop.id}`}
+                              to={`/productsingle/${product.ProductId}`}
                               className="img-prod"
                             >
                               <img
                                 className="img-fluid"
-                                src={shop.picture}
+                                src={product.Image}
                                 alt="Colorlib Template"
                               />
-                              {shop.status !== "" ? (
-                                <span className="status">{shop.status}</span>
+                              {product.status !== "" ? (
+                                <span className="status">{product.Status}</span>
                               ) : (
                                 ""
                               )}
                             </Link>
                             <div className="text pt-3 px-3">
                               <h3>
-                                <Link to={`/productsingle/${shop.id}`}>
-                                  {shop.title}
+                                <Link to={`/productsingle/${product.ProductId}`}>
+                                  {product.name}
                                 </Link>
                               </h3>
                               <div className="d-flex">
                                 <div className="pricing">
                                   <p className="price">
                                     <span className="mr-2 price-dc">
-                                      {shop.discountPrice}
+                                      {product.DiscountedPrice}
                                     </span>
                                     <span className="price-sale">
-                                      {shop.realPrice}
+                                      {product.Price}
                                     </span>
                                   </p>
                                 </div>
@@ -80,10 +86,11 @@ class Tending extends Component {
 }
 
 const mapStateToProps = state => {
-  const { shopData } = state.Shop;
+  const {products} = state.Shop;
   return {
-    shopData
+   
+    products
   };
 };
 
-export default connect(mapStateToProps)(Tending);
+export default connect(mapStateToProps, {getallProducts})(Tending);
