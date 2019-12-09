@@ -26,7 +26,7 @@ class ProductDetail extends Component {
                   <tbody>
                     {addedCart.map(addedData => {
                       return (
-                        <tr key={addedData.id} className="text-center">
+                        <tr key={addedData.ProductId} className="text-center">
                           <td className="product-remove">
                             <Link to="#">
                               <span className="ion-ios-close" />
@@ -37,15 +37,15 @@ class ProductDetail extends Component {
                               className="img"
                               style={{
                                 backgroundImage:
-                                  "url(" + addedData.picture + ")"
+                                  "url(" + addedData.Image + ")"
                               }}
                             />
                           </td>
                           <td className="product-name">
-                            <h3>{addedData.title}</h3>
-                            <p>{addedData.description}</p>
+                            <h3>{addedData.Name}</h3>
+                           
                           </td>
-                          <td className="price">{addedData.realPrice}</td>
+                          <td className="price">{addedData.Price}</td>
                           <td className="quantity">
                             <div className="input-group mb-3">
                               <input

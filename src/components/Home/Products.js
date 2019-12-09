@@ -1,14 +1,81 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getallProducts } from "../Redux/Actions/";
+import { getallProducts } from "../Redux/Actions";
 
 class Products extends Component {
-  UNSAFE_componentWillMount() {
+
+  componentWillMount() {
     this.props.getallProducts();
   }
+
+
+  getChosenProducts = ()=>{
+    const chosenProducts = [];
+    const {products} = this.props
+    for (let i = 0; i < 4; i++) {
+      
+      chosenProducts.push(
+        
+        <div
+          key={products[i].ProductId}
+          className="col-sm col-md-6 col-lg ftco-animate"
+        >
+          <div className="product">
+            <Link to={`/productsingle/${products[i].ProductId}`} className="img-prod">
+              <img
+                className="img-fluid"
+                src={products[i].Image}
+                alt="Colorlib Template"
+              />
+            </Link>
+            <div className="text py-3 px-3">
+              <h3>
+                <Link to={`/productsingle/${products[i].ProductId}`}>
+                  {products[i].Name}
+                </Link>
+              </h3>
+              <div className="d-flex">
+                <div className="pricing">
+                  <p className="price">
+                    <span>{products[i].Prices}</span>
+                  </p>
+                </div>
+                <div className="rating">
+                  <p className="text-right">
+                    <span className="ion-ios-star-outline" />
+                    <span className="ion-ios-star-outline" />
+                    <span className="ion-ios-star-outline" />
+                    <span className="ion-ios-star-outline" />
+                    <span className="ion-ios-star-outline" />
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <p className="bottom-area d-flex">
+                <Link to="#" className="add-to-cart">
+                  <span>
+                    Add to cart <i className="ion-ios-add ml-1" />
+                  </span>
+                </Link>
+                <Link to="#" className="ml-auto">
+                  <span>
+                    <i className="ion-ios-heart-empty" />
+                  </span>
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+       
+      ) ;
+    }
+    return chosenProducts;
+  }
+
   render() {
     const { products } = this.props;
+  
     return (
       <section className="ftco-section bg-light">
         <div className="container">
@@ -20,67 +87,7 @@ class Products extends Component {
           </div>
         </div>
         <div className="container-fluid">
-          <div className="row">
-            {products.length > 0
-              ? products.map(product => {
-                  return (
-                    <div
-                      key={product.id}
-                      className="col-sm col-md-6 col-lg ftco-animate"
-                    >
-                      <div className="product">
-                        <Link
-                          to={`/productsingle/${product.id}`}
-                          className="img-prod"
-                        >
-                          <img
-                            className="img-fluid"
-                            src={product.picture}
-                            alt="Colorlib Template"
-                          />
-                        </Link>
-                        <div className="text py-3 px-3">
-                          <h3>
-                            <Link to={`/productsingle/${product.id}`}>
-                              {product.title}
-                            </Link>
-                          </h3>
-                          <div className="d-flex">
-                            <div className="pricing">
-                              <p className="price">
-                                <span>{product.realPrice}</span>
-                              </p>
-                            </div>
-                            <div className="rating">
-                              <p className="text-right">
-                                <span className="ion-ios-star-outline" />
-                                <span className="ion-ios-star-outline" />
-                                <span className="ion-ios-star-outline" />
-                                <span className="ion-ios-star-outline" />
-                                <span className="ion-ios-star-outline" />
-                              </p>
-                            </div>
-                          </div>
-                          <hr />
-                          <p className="bottom-area d-flex">
-                            <Link to="#" className="add-to-cart">
-                              <span>
-                                Add to cart <i className="ion-ios-add ml-1" />
-                              </span>
-                            </Link>
-                            <Link to="#" className="ml-auto">
-                              <span>
-                                <i className="ion-ios-heart-empty" />
-                              </span>
-                            </Link>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              : ""}
-          </div>
+          <div className="row">{products.length > 0 ? this.getChosenProducts() : ""}</div>
         </div>
       </section>
     );
@@ -88,10 +95,13 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => {
+ 
   const { products } = state.Shop;
+ 
   return {
+   
     products
   };
 };
 
-export default connect(mapStateToProps, { getallProducts })(Products);
+export default connect(mapStateToProps, {getallProducts})(Products);
