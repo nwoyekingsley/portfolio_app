@@ -48,7 +48,7 @@ class Tending extends Component {
                                 <Link
                                   to={`/productsingle/${product.ProductId}`}
                                 >
-                                  {product.name}
+                                  {product.Name}
                                 </Link>
                               </h3>
                               <div className="d-flex">

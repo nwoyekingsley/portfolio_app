@@ -1,35 +1,44 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { getallProducts } from "../Redux/Actions";
 
 class Products extends Component {
-  render() {
-    const { shopData } = this.props;
+
+  componentWillMount() {
+    this.props.getallProducts();
+  }
+
+
+  getChosenProducts = ()=>{
     const chosenProducts = [];
+    const {products} = this.props
     for (let i = 0; i < 4; i++) {
+      
       chosenProducts.push(
+        
         <div
-          key={shopData[i].id}
+          key={products[i].ProductId}
           className="col-sm col-md-6 col-lg ftco-animate"
         >
           <div className="product">
-            <Link to={`/productsingle/${shopData[i].id}`} className="img-prod">
+            <Link to={`/productsingle/${products[i].ProductId}`} className="img-prod">
               <img
                 className="img-fluid"
-                src={shopData[i].picture}
+                src={products[i].Image}
                 alt="Colorlib Template"
               />
             </Link>
             <div className="text py-3 px-3">
               <h3>
-                <Link to={`/productsingle/${shopData[i].id}`}>
-                  {shopData[i].title}
+                <Link to={`/productsingle/${products[i].ProductId}`}>
+                  {products[i].Name}
                 </Link>
               </h3>
               <div className="d-flex">
                 <div className="pricing">
                   <p className="price">
-                    <span>{shopData[i].realPrice}</span>
+                    <span>{products[i].Prices}</span>
                   </p>
                 </div>
                 <div className="rating">
@@ -58,8 +67,15 @@ class Products extends Component {
             </div>
           </div>
         </div>
-      );
+       
+      ) ;
     }
+    return chosenProducts;
+  }
+
+  render() {
+    const { products } = this.props;
+  
     return (
       <section className="ftco-section bg-light">
         <div className="container">
@@ -71,7 +87,7 @@ class Products extends Component {
           </div>
         </div>
         <div className="container-fluid">
-          <div className="row">{shopData.length > 0 ? chosenProducts : ""}</div>
+          <div className="row">{products.length > 0 ? this.getChosenProducts() : ""}</div>
         </div>
       </section>
     );
@@ -79,10 +95,13 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => {
-  const { shopData } = state.Shop;
+ 
+  const { products } = state.Shop;
+ 
   return {
-    shopData
+   
+    products
   };
 };
 
-export default connect(mapStateToProps)(Products);
+export default connect(mapStateToProps, {getallProducts})(Products);

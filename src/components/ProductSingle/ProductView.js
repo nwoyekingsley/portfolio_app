@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { incrementItem } from "../Redux/Actions";
-import { decreaseItem } from "../Redux/Actions";
-import { handler } from "../Redux/Actions";
+import { incrementItem,  decreaseItem, handler} from "../Redux/Actions";
+
 
 class ProductView extends Component {
-  UNSAFE_componentWillReceiveProps() {
+  componentWillReceiveProps() {
     const { moveToCart } = this.props;
     if (moveToCart) {
       this.props.history.push("/cart");
@@ -16,10 +15,10 @@ class ProductView extends Component {
 
   render() {
     const { product, value, addedtocart } = this.props;
-
-    let productSize = product.size.map((size, i) => {
-      return <option key={i}>{size}</option>;
-    });
+    console.log(product, 'i am one product in render')
+    // let productSize = product.size.map((size, i) => {
+    //   return <option key={i}>{size}</option>;
+    // });
     return (
       <section className="ftco-section bg-light">
         <div className="container">
@@ -27,18 +26,18 @@ class ProductView extends Component {
             <div className="col-lg-6 mb-5 ftco-animate">
               <Link to="/Assets/images/menu-2.jpg" className="image-popup">
                 <img
-                  src={product.picture}
+                  src={product.Image}
                   className="img-fluid"
                   alt="Colorlib Template"
                 />
               </Link>
             </div>
             <div className="col-lg-6 product-details pl-md-5 ftco-animate">
-              <h3>{product.title}</h3>
+              <h3>{product.Name}</h3>
               <p className="price">
-                <span>{product.realPrice}</span>
+                <span>{product.Price}</span>
               </p>
-              <p>{product.description}</p>
+              <p>{product.Description}</p>
 
               <div className="row mt-4">
                 <div className="col-md-6">
@@ -48,7 +47,7 @@ class ProductView extends Component {
                         <span className="ion-ios-arrow-down" />
                       </div>
                       <select name="text" id="" className="form-control">
-                        {productSize}
+                        {/* {productSize} */}
                       </select>
                     </div>
                   </div>

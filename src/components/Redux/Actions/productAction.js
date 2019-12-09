@@ -1,10 +1,10 @@
 import {
-    GET_PRODUCTS
+    GET_PRODUCTS, GET_ONE_PRODUCT
    
   } from "./Types";
 
 import axios from "axios";
-import { restElement } from "@babel/types";
+
   
   // INTCREMENT_ITEM BUTTON IN MY PRODUCT_SINGLE
   export const getallProducts = () => {
@@ -19,11 +19,29 @@ import { restElement } from "@babel/types";
             });
         })
         .catch(err=>{
-            console.log(err, 'i am err')
+          console.log(err, 'i am err')
         })
-    
+
     };
   };
   
+  //Get one Product
+  export const getOneProduct = (product_id) => {
+  
+    return dispatch => {
+        axios.get(`http://ogbuifymark-001-site2.btempurl.com/products/${product_id}/details`)
+        .then(res =>{
+          dispatch({
+            type: GET_ONE_PRODUCT,
+            payload: res.data
+        });
+         
+        })
+        .catch(err=>{
+          console.log(err, 'i am err')
+        })
+
+    };
+  };
   
   
