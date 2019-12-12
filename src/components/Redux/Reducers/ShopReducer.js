@@ -14,7 +14,6 @@ import {
 } from "../Actions/Types";
 
 const initialState = {
-  
   value: 1,
   addedCart: [],
   total: "",
@@ -57,11 +56,10 @@ const ShopReducer = (state = initialState, action) => {
       return { ...state, paymentType: action.payload };
 
     case GET_PRODUCTS:
+      return { ...state, products: action.payload };
 
-      return{...state, products: action.payload}
-
-    case GET_ONE_PRODUCT: 
-      return{...state, oneProduct: action.payload}
+    case GET_ONE_PRODUCT:
+      return { ...state, oneProduct: action.payload };
 
     default:
       return state;

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginCustomer } from "../Redux/Actions";
+import { loginCustomer, getFormData } from "../Redux/Actions";
 
 class LoginForm extends Component {
   render() {
+    const { loginPassword, loginEmail } = this.props;
     return (
       <div className="container">
         {/* Outer Row */}
@@ -24,18 +25,24 @@ class LoginForm extends Component {
                         <div className="form-group">
                           <input
                             type="email"
-                            className="form-control form-control-user"
+                            className="form-control "
+                            name='loginEmail'
+                            value={loginEmail}
                             id="exampleInputEmail"
                             aria-describedby="emailHelp"
                             placeholder="Enter Email Address..."
+                            onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                           />
                         </div>
                         <div className="form-group">
                           <input
                             type="password"
-                            className="form-control form-control-user"
+                            className="form-control "
                             id="exampleInputPassword"
                             placeholder="Password"
+                            value={loginPassword}
+                            name='loginPassword'
+                            onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                           />
                         </div>
                         <div className="form-group">
@@ -49,13 +56,17 @@ class LoginForm extends Component {
                               className="custom-control-label"
                               htmlFor="customCheck"
                             >
-                              Re Remember Me
+                              Remember Me
                             </label>
                           </div>
                         </div>
                         <Link
                           to="/"
                           className="btn btn-primary btn-user btn-block"
+                          onClick={e => {
+                            e.preventDefault();
+                            this.props.loginCustomer(loginEmail, loginPassword);
+                          }}
                         >
                           Login
                         </Link>
@@ -99,8 +110,11 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => {
-  const { email, password } = state.Form;
-  return { email, password };
+  const { loginPassword, loginEmail } = state.Form;
+  return {
+    loginPassword,
+    loginEmail
+  };
 };
 
-export default connect(mapStateToProps, { loginCustomer })(LoginForm);
+export default connect(mapStateToProps, { loginCustomer, getFormData })(LoginForm);

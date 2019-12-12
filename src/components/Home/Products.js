@@ -4,25 +4,24 @@ import { connect } from "react-redux";
 import { getallProducts } from "../Redux/Actions";
 
 class Products extends Component {
-
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getallProducts();
   }
 
-
-  getChosenProducts = ()=>{
+  getChosenProducts = () => {
     const chosenProducts = [];
-    const {products} = this.props
+    const { products } = this.props;
     for (let i = 0; i < 4; i++) {
-      
       chosenProducts.push(
-        
         <div
           key={products[i].ProductId}
           className="col-sm col-md-6 col-lg ftco-animate"
         >
           <div className="product">
-            <Link to={`/productsingle/${products[i].ProductId}`} className="img-prod">
+            <Link
+              to={`/productsingle/${products[i].ProductId}`}
+              className="img-prod"
+            >
               <img
                 className="img-fluid"
                 src={products[i].Image}
@@ -67,15 +66,14 @@ class Products extends Component {
             </div>
           </div>
         </div>
-       
-      ) ;
+      );
     }
     return chosenProducts;
-  }
+  };
 
   render() {
     const { products } = this.props;
-  
+
     return (
       <section className="ftco-section bg-light">
         <div className="container">
@@ -87,7 +85,9 @@ class Products extends Component {
           </div>
         </div>
         <div className="container-fluid">
-          <div className="row">{products.length > 0 ? this.getChosenProducts() : ""}</div>
+          <div className="row">
+            {products.length > 0 ? this.getChosenProducts() : ""}
+          </div>
         </div>
       </section>
     );
@@ -95,13 +95,11 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => {
- 
   const { products } = state.Shop;
- 
+
   return {
-   
     products
   };
 };
 
-export default connect(mapStateToProps, {getallProducts})(Products);
+export default connect(mapStateToProps, { getallProducts })(Products);

@@ -8,7 +8,7 @@ import {
   PAYMENT_STACK,
   PAYMENT_BANK,
   PAYMENT_CHECK,
-  CHANGEPAYMENT_TYPES
+  CHANGEPAYMENT_TYPES,
 } from "./Types";
 import Swal from "sweetalert2";
 
@@ -115,11 +115,11 @@ export const clickedPayStack = () => {
         ]
       },
       // This javascript function is called when the customer payment is successfull.
-      callback: function(response) {
+      callback: function (response) {
         alert("success. transaction ref is " + response.reference);
       },
       // This javascript function is invoked when the customer close the paystack window.
-      onClose: function() {
+      onClose: function () {
         alert("window closed");
       }
     });
@@ -160,3 +160,12 @@ export const changePaymentTypes = data => {
       payload: data
     });
 };
+
+// CheckPassword
+export const checkPassword = (password, repeatPassword) => {
+  if (password === repeatPassword) {
+    return false;
+  } else {
+    return true;
+  }
+}

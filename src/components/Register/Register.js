@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerCustomer, getFormData, checkPassword } from "../Redux/Actions"
 
 class Register extends Component {
   render() {
+    const { firstName, email, password, repeatPassword } = this.props;
     return (
       <div className="container">
         <div className="card o-hidden border-0 shadow-lg my-5">
@@ -22,52 +25,61 @@ class Register extends Component {
                       <div className="col-sm-6 mb-3 mb-sm-0">
                         <input
                           type="text"
-                          className="form-control form-control-user"
-                          id="exampleFirstName"
-                          placeholder="First Name"
+                          className="form-control"
+                          name='firstName'
+                          value={firstName}
+                          id="exampleEnterYouName"
+                          placeholder="Enter You Name"
+                          onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                         />
                       </div>
                       <div className="col-sm-6">
                         <input
                           type="text"
-                          className="form-control form-control-user"
-                          id="exampleLastName"
-                          placeholder="Last Name"
+                          className="form-control"
+                          name='email'
+                          value={email}
+                          id="exampleInputEmail"
+                          aria-describedby="emailHelp"
+                          placeholder="Enter Email Address..."
+                          onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                         />
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="email"
-                        className="form-control form-control-user"
-                        id="exampleInputEmail"
-                        placeholder="Email Address"
-                      />
                     </div>
                     <div className="form-group row">
                       <div className="col-sm-6 mb-3 mb-sm-0">
                         <input
                           type="password"
-                          className="form-control form-control-user"
+                          className="form-control"
+                          name="password"
+                          value={password}
                           id="exampleInputPassword"
                           placeholder="Password"
+                          onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                         />
                       </div>
                       <div className="col-sm-6">
                         <input
                           type="password"
-                          className="form-control form-control-user"
+                          className="form-control"
+                          name="repeatPassword"
+                          value={repeatPassword}
                           id="exampleRepeatPassword"
                           placeholder="Repeat Password"
+                          onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                         />
                       </div>
                     </div>
-                    <Link
-                      to="/login"
+                    <button
+                      disabled={checkPassword(password, repeatPassword)}
                       className="btn btn-primary btn-user btn-block"
+                      onClick={e => {
+                        e.preventDefault();
+                        this.props.registerCustomer(firstName, email, password);
+                      }}
                     >
                       Register Account
-                    </Link>
+                    </button>
                     <hr />
                     <Link to="/" className="btn btn-google btn-user btn-block">
                       <i className="fab fa-google fa-fw" /> Register with Google
@@ -101,4 +113,14 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+  const { firstName, email, password, repeatPassword } = state.Form;
+  return {
+    firstName,
+    email,
+    password,
+    repeatPassword
+  }
+}
+
+export default connect(mapStateToProps, { registerCustomer, getFormData })(Register);
