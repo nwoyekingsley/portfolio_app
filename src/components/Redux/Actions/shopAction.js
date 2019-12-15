@@ -8,7 +8,7 @@ import {
   PAYMENT_STACK,
   PAYMENT_BANK,
   PAYMENT_CHECK,
-  CHANGEPAYMENT_TYPES
+  CHANGEPAYMENT_TYPES,
 } from "./Types";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -106,22 +106,22 @@ export const addedtocart = data => {
 export const clickedPayStack = () => {
   return dispatch => {
     let handler = window.PaystackPop.setup({
-      // my public key from paystack.
+      // My public key from paystack.
       key: "pk_test_53bcf8edfaaac01c50bbbfe8d943eab06adeb8d0",
-      // the customers gmail address.
+      // The customers gmail address.
       email: "Customers@gmail.com",
-      // the amount the customer wants to pay
+      // The amount the customer wants to pay
       amount: 10000,
-      // the (NGN) stands for nigerian naria code currency which is NGN and is stands for naria
+      // The (NGN) stands for nigerian naria code currency which is NGN and is stands for naria
       currency: "NGN",
-      // the ref the customer is paying for.
+      // The ref the customer is paying for.
       // ref: "" + Math.floor(Math.random() * 1000000000 + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
-      // the customers firstName.
+      // The customers firstName.
       firstname: "john",
-      // the customers lastName.
+      // The customers lastName.
       lastname: "Doe",
-      // label: "Optional string that replaces customers email"
-      // metadata field can be define as a way to get extra information about the customer.
+      // Label: "Optional string that replaces customers email"
+      // Metadata field can be define as a way to get extra information about the customer.
       metadata: {
         custom_fields: [
           {
@@ -131,16 +131,16 @@ export const clickedPayStack = () => {
           }
         ]
       },
-      // this javascript function is called when the customer payment is successfull.
-      callback: function(response) {
+      // This javascript function is called when the customer payment is successfull.
+      callback: function (response) {
         alert("success. transaction ref is " + response.reference);
       },
-      // this javascript function is invoked when the customer close the paystack window.
-      onClose: function() {
+      // This javascript function is invoked when the customer close the paystack window.
+      onClose: function () {
         alert("window closed");
       }
     });
-    // this is
+
     let pay = handler.openIframe();
     dispatch({
       type: PAYMENT_STACK,
@@ -177,3 +177,12 @@ export const changePaymentTypes = data => {
       payload: data
     });
 };
+
+// CheckPassword
+export const checkPassword = (password, repeatPassword) => {
+  if (password === repeatPassword) {
+    return false;
+  } else {
+    return true;
+  }
+}

@@ -18,7 +18,6 @@ class Script extends Component {
     const script14 = document.createElement("script");
     const script15 = document.createElement("script");
     const script16 = document.createElement("script");
-    const script17 = document.createElement("script");
 
     script1.src = "/Assets/js/jquery.min.js";
     script2.src = "/Assets/js/jquery-migrate-3.0.1.min.js";
@@ -36,8 +35,7 @@ class Script extends Component {
     // script14.src =
     //   "https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false";
     // script15.src = "/Assets/js/google-map.js";
-    script16.src = "https://js.paystack.co/v1/inline.js";
-    script17.src = "/Assets/js/main.js";
+    script16.src = "/Assets/js/main.js";
 
     document.body.appendChild(script1);
     document.body.appendChild(script2);
@@ -55,7 +53,6 @@ class Script extends Component {
     document.body.appendChild(script14);
     document.body.appendChild(script15);
     document.body.appendChild(script16);
-    document.body.appendChild(script17);
   }
   render() {
     return <div></div>;
