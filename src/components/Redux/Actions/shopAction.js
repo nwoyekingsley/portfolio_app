@@ -11,6 +11,8 @@ import {
   CHANGEPAYMENT_TYPES
 } from "./Types";
 import Swal from "sweetalert2";
+import axios from "axios";
+
 
 // INTCREMENT_ITEM BUTTON IN MY PRODUCT_SINGLE
 export const incrementItem = value => {
@@ -20,6 +22,21 @@ export const incrementItem = value => {
       type: INTCREMENT_ITEM,
       payload: newValue
     });
+  };
+};
+
+//Generate Cart Id
+export const getCartId = () => {
+  return dispatch => {
+      axios.get('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/generateUniqueId')
+      .then(res =>{
+         
+          console.log(res, 'i am the resId')
+      })
+      .catch(err=>{
+        console.log(err, 'i am err')
+      })
+
   };
 };
 
