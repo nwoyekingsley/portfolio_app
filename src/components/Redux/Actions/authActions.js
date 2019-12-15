@@ -7,7 +7,7 @@ export const loginCustomer = (email, password) => {
   bodyFormData.set("password", password);
   console.log(bodyFormData, email, password, "200")
   return dispatch => {
-    // Am performing a post requst.
+    // Am performing a post requst..
     axios
       .post(
         "http://ogbuifymark-001-site2.btempurl.com/customers/login",
