@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { incrementItem,  decreaseItem, handler} from "../Redux/Actions";
+import { incrementItem,  decreaseItem, handler, getProductAttributes} from "../Redux/Actions";
 
 
 class ProductView extends Component {
+  componentWillMount(){
+    this.props.getProductAttributes(this.props.product.ProductId)
+  }
   componentWillReceiveProps() {
     const { moveToCart } = this.props;
     if (moveToCart) {
@@ -106,7 +109,7 @@ const mapStateToProps = state => {
   };
 };
 export default withRouter(
-  connect(mapStateToProps, { incrementItem, decreaseItem, handler })(
+  connect(mapStateToProps, { incrementItem, decreaseItem, handler, getProductAttributes })(
     ProductView
   )
 );

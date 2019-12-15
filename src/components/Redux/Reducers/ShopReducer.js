@@ -35,7 +35,7 @@ const ShopReducer = (state = initialState, action) => {
       return { ...state, value: action.payload };
 
     case ADD_TO_CART:
-      return { ...state, addedCart: [...state.addedCart, action.payload] };
+      return { ...state, addedCart: action.payload};
 
     case RETURNS_TO_CART:
       return { ...state, moveToCart: action.payload };

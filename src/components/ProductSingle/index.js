@@ -6,13 +6,13 @@ import ProductView from "./ProductView";
 import Subscribe from "../Reusables/Subscribe";
 import Footer from "../Reusables/Footer";
 import { connect } from "react-redux";
-import { addedtocart, getOneProduct, getCartId} from "../Redux/Actions";
+import { addedtocart, getOneProduct, getProductAttributes} from "../Redux/Actions";
 
 class ProductSingle extends Component {
 
   componentWillMount(){
     this.props.getOneProduct(this.props.id)
-    this.props.getCartId()
+   
   }
 
 
@@ -48,5 +48,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps,
 
-  { addedtocart, getOneProduct,getCartId}
+  { addedtocart, getOneProduct, getProductAttributes}
 )(ProductSingle);

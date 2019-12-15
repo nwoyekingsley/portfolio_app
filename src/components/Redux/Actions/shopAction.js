@@ -2,7 +2,6 @@ import {
   INTCREMENT_ITEM,
   DECREASE_ITEM,
   ONCHANGE_HANDLER,
-  ADD_TO_CART,
   TAKES_TO_CART,
   RETURNS_TO_CART,
   PAYMENT_STACK,
@@ -12,6 +11,7 @@ import {
 } from "./Types";
 import Swal from "sweetalert2";
 import axios from "axios";
+
 
 
 // INTCREMENT_ITEM BUTTON IN MY PRODUCT_SINGLE
@@ -25,20 +25,7 @@ export const incrementItem = value => {
   };
 };
 
-//Generate Cart Id
-export const getCartId = () => {
-  return dispatch => {
-      axios.get('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/generateUniqueId')
-      .then(res =>{
-         
-          console.log(res, 'i am the resId')
-      })
-      .catch(err=>{
-        console.log(err, 'i am err')
-      })
 
-  };
-};
 
 // DECREASE_ITEM BUTTON IN MY PRODUCT_SINGLE_PAGE
 export const decreaseItem = value => {
@@ -65,40 +52,98 @@ export const handler = e => {
   };
 };
 
+
+
 //THIS IS MY ADD_TO_CART / TAKES_TO_CART / RETURNS_TO_CART AND ALSO I MAKE USE OF SWEETALERT2
 export const addedtocart = data => {
   return dispatch => {
-    let total = data;
-    if (total === data) {
-      console.log(total);
-    } else {
-      return;
+    let cartId = JSON.parse(localStorage.getItem('cartId'))
+    let atttributes = {
+      "attribute_value_id": 2,
+      "attribute_name": "Size",
+      "attribute_value": "M"
     }
-    dispatch({
-      type: ADD_TO_CART,
-      payload: data
-    });
-    Swal.fire({
-      title: "Added to Cart",
-      text: "Item is added to you Cart",
-      icon: "success",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "GO TO CART",
-      cancelButtonText: "COUTINUE SHOPPING"
-    }).then(result => {
-      if (result.value) {
-        dispatch({
-          type: TAKES_TO_CART,
-          payload: true
+   
+    if (cartId !== null) {
+      let bodyFormData = new FormData();
+      bodyFormData.set("cart_id", cartId);
+      bodyFormData.set("product_id", data.product_id);
+      bodyFormData.set("attributes", atttributes);
+
+      axios.post('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/add', bodyFormData)
+      .then(res =>{
+        console.log(res, cartId, ' i am addding to rrr')
+        Swal.fire({
+          title: "Added to Cart",
+          text: "Item is added to you Cart",
+          icon: "success",
+          showCancelButton: true,
+          cancelButtonColor: "#d33",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "GO TO CART",
+          cancelButtonText: "COUTINUE SHOPPING"
+        }).then(result => {
+          if (result.value) {
+            dispatch({
+              type: TAKES_TO_CART,
+              payload: true
+            });
+            dispatch({
+              type: RETURNS_TO_CART,
+              payload: false
+            });
+          }
         });
-        dispatch({
-          type: RETURNS_TO_CART,
-          payload: false
-        });
-      }
-    });
+      })
+      .catch(err =>{
+        console.log(err)
+      })
+   
+    } else {
+      let bodyFormData = new FormData();
+      bodyFormData.set("product_id", data.product_id);
+      bodyFormData.set("attributes", atttributes);
+
+      axios.get('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/generateUniqueId')
+      .then(res =>{
+          localStorage.setItem('cartId', JSON.stringify(res.data.cart_id));
+          bodyFormData.set("cart_id", res.data.cart_id);
+          axios.post('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/add', bodyFormData)
+          .then(res =>{
+            console.log(res, ' i am addding to rrr', res.data.cart_id)
+            Swal.fire({
+              title: "Added to Cart",
+              text: "Item is added to you Cart",
+              icon: "success",
+              showCancelButton: true,
+              cancelButtonColor: "#d33",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "GO TO CART",
+              cancelButtonText: "COUTINUE SHOPPING"
+            }).then(result => {
+              if (result.value) {
+                dispatch({
+                  type: TAKES_TO_CART,
+                  payload: true
+                });
+                dispatch({
+                  type: RETURNS_TO_CART,
+                  payload: false
+                });
+              }
+            });
+          })
+          .catch(err =>{
+            console.log(err)
+          })
+
+      })
+      .catch(err=>{
+        console.log(err, 'i am err')
+      })
+      
+    }
+   
   };
 };
 

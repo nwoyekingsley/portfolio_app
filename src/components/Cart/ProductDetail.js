@@ -6,6 +6,7 @@ import { handler } from "../Redux/Actions";
 class ProductDetail extends Component {
   render() {
     const { addedCart, value } = this.props;
+
     return (
       <section className="ftco-section ftco-cart">
         <div className="container">
@@ -24,7 +25,7 @@ class ProductDetail extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {addedCart.map(addedData => {
+                    {addedCart.length == 0 ? <tr> </tr> : addedCart.map(addedData => {
                       return (
                         <tr key={addedData.ProductId} className="text-center">
                           <td className="product-remove">

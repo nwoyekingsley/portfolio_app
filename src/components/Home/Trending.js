@@ -9,6 +9,7 @@ class Tending extends Component {
   }
   render() {
     const { products } = this.props;
+    
     return (
       <section className="ftco-section ftco-product">
         <div className="container">

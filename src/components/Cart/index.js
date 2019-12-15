@@ -7,8 +7,12 @@ import Product from "../Home/Products";
 import Subscribe from "../Reusables/Subscribe";
 import Footer from "../Reusables/Footer";
 import { connect } from "react-redux";
+import  {getCartProducts} from '../Redux/Actions'
 
 class Cart extends Component {
+  componentWillMount(){
+    this.props.getCartProducts()
+  }
   render() {
     const { value } = this.props;
     return (
@@ -32,4 +36,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Cart);
+export default connect(mapStateToProps, {getCartProducts})(Cart);
