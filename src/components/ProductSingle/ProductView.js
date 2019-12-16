@@ -6,10 +6,13 @@ import { incrementItem,  decreaseItem, handler, getProductAttributes} from "../R
 
 
 class ProductView extends Component {
-  componentWillMount(){
+
+  componentDidMount(){
+    console.log(this.props.product)
     this.props.getProductAttributes(this.props.product.ProductId)
   }
   componentWillReceiveProps() {
+
     const { moveToCart } = this.props;
     if (moveToCart) {
       this.props.history.push("/cart");
@@ -18,7 +21,7 @@ class ProductView extends Component {
 
   render() {
     const { product, value, addedtocart } = this.props;
-    console.log(product, 'i am one product in render')
+  
     // let productSize = product.size.map((size, i) => {
     //   return <option key={i}>{size}</option>;
     // });
