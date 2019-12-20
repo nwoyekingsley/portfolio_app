@@ -6,9 +6,16 @@ import ProductView from "./ProductView";
 import Subscribe from "../Reusables/Subscribe";
 import Footer from "../Reusables/Footer";
 import { connect } from "react-redux";
-import { addedtocart } from "../Redux/Actions";
+import { addedtocart, getOneProduct, getProductAttributes} from "../Redux/Actions";
 
 class ProductSingle extends Component {
+
+  componentWillMount(){
+    this.props.getOneProduct(this.props.id)
+   
+  }
+
+
   render() {
     const { oneProduct, value } = this.props;
     return (
@@ -29,19 +36,17 @@ class ProductSingle extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
-  const { shopData, value } = state.Shop;
-  const oneProduct = shopData.find(product => {
-    return product.id === id;
-  });
+  const { value , oneProduct} = state.Shop;
 
   return {
     oneProduct,
-    value
+    value,
+    id
   };
 };
 
 export default connect(
   mapStateToProps,
 
-  { addedtocart }
+  { addedtocart, getOneProduct, getProductAttributes}
 )(ProductSingle);

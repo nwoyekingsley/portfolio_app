@@ -1,51 +1,58 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import {getallProducts} from '../Redux/Actions'
 
 class ShopWorld extends Component {
+
+  componentWillMount() {
+    this.props.getallProducts();
+  }  
+
   render() {
-    const { shopData } = this.props;
+    const { products } = this.props;
+    console.log(products)
     return (
       <section className="ftco-section bg-light">
         <div className="container-fluid">
           <div className="row">
-            {shopData.length > 0
-              ? shopData.map(data => {
+            {products.length > 0
+              ? products.map(product => {
                   return (
                     <div
-                      key={data.id}
+                      key={product.ProductId}
                       className="col-sm col-md-6 col-lg-3 ftco-animate"
                     >
                       <div className="product">
                         <Link
-                          to={`/productsingle/${data.id}`}
+                          to={`/productsingle/${product.ProductId}`}
                           className="img-prod"
                         >
                           <img
                             className="img-fluid"
-                            src={data.picture}
+                            src={product.Image}
                             alt="Colorlib Template"
                           />
-                          {data.status !== "" ? (
-                            <span className="status">{data.status}</span>
+                          {product.Status !== "" ? (
+                            <span className="status">{product.Status}</span>
                           ) : (
                             ""
                           )}
                         </Link>
                         <div className="text py-3 px-3">
                           <h3>
-                            <Link to={`/productsingle/${data.id}`}>
-                              {data.title}
+                            <Link to={`/productsingle/${product.ProductId}`}>
+                              {product.Name}
                             </Link>
                           </h3>
                           <div className="d-flex">
                             <div className="pricing">
                               <p className="price">
                                 <span className="mr-2 price-dc">
-                                  {data.discountPrice}
+                                  {product.DiscountedPrice}
                                 </span>
                                 <span className="price-sale">
-                                  {data.realPrice}
+                                  {product.Price}
                                 </span>
                               </p>
                             </div>
@@ -79,7 +86,7 @@ class ShopWorld extends Component {
                 })
               : ""}
           </div>
-          <div className="row mt-5">
+          {/* <div className="row mt-5">
             <div className="col text-center">
               <div className="block-27">
                 <ul>
@@ -107,7 +114,7 @@ class ShopWorld extends Component {
                 </ul>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     );
@@ -115,10 +122,10 @@ class ShopWorld extends Component {
 }
 
 const mapStateToProps = state => {
-  const { shopData } = state.Shop;
+  const { products } = state.Shop;
   return {
-    shopData
+    products
   };
 };
 
-export default connect(mapStateToProps)(ShopWorld);
+export default connect(mapStateToProps, {getallProducts})(ShopWorld);

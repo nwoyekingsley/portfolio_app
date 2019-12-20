@@ -4,13 +4,12 @@ import { connect } from "react-redux";
 import { getallProducts } from "../Redux/Actions";
 
 class Tending extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getallProducts();
   }
-
   render() {
     const { products } = this.props;
-
+    
     return (
       <section className="ftco-section ftco-product">
         <div className="container">
@@ -48,7 +47,7 @@ class Tending extends Component {
                                 <Link
                                   to={`/productsingle/${product.ProductId}`}
                                 >
-                                  {product.name}
+                                  {product.Name}
                                 </Link>
                               </h3>
                               <div className="d-flex">

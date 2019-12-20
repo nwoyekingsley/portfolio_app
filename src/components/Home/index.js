@@ -2,7 +2,7 @@ import React from "react";
 import Script from "../Script/Script";
 import Navbar from "../Reusables/Navbar";
 import Statis from "./Statis";
-import Tending from "./Tending";
+import Trending from "./Trending";
 import Fashion from "./Fashion";
 import Products from "./Products";
 import HighLight from "./HighLight";
@@ -18,7 +18,7 @@ function Home() {
       <Script />
       <Navbar />
       <Statis />
-      <Tending />
+      <Trending />
       <Fashion />
       <Products />
       <HighLight />
