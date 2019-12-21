@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 class Script extends Component {
   componentWillMount() {
+    
     const script1 = document.createElement("script");
     const script2 = document.createElement("script");
     const script3 = document.createElement("script");

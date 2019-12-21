@@ -10,14 +10,18 @@ import { addedtocart, getOneProduct, getProductAttributes} from "../Redux/Action
 
 class ProductSingle extends Component {
 
-  componentWillMount(){
+  componentDidMount(){
+
     this.props.getOneProduct(this.props.id)
-   
+    this.props.getProductAttributes(this.props.id)
+    
+    
   }
 
 
   render() {
-    const { oneProduct, value } = this.props;
+    const { oneProduct, value, id} = this.props;
+   
     return (
       <div>
         <Script />
@@ -37,6 +41,7 @@ class ProductSingle extends Component {
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const { value , oneProduct} = state.Shop;
+  console.log(id, 'i am id')
 
   return {
     oneProduct,
