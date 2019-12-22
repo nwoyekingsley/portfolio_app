@@ -22,9 +22,11 @@ const store = createStore(combineReducers, {}, applyMiddleware(ReduxThunk));
 function App() {
   return (
     <div>
+      
       <Provider store={store}>
         <Router>
           {/* <Loader /> */}
+         
           <Route exact path="/" component={Home} />
           <Route exact path="/about" component={About} />
           <Route exact path="/contact" component={Contact} />
@@ -37,7 +39,9 @@ function App() {
           <Route exact path="/productsingle/:id" component={ProductSingle} />
           <Route exact path="/checkout" component={Checkout} />
         </Router>
+       
       </Provider>
+
     </div>
   );
 }

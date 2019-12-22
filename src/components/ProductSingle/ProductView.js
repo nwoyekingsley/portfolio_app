@@ -2,15 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { incrementItem,  decreaseItem, handler, getProductAttributes} from "../Redux/Actions";
+import { incrementItem,  decreaseItem, handler} from "../Redux/Actions";
 
 
 class ProductView extends Component {
 
-  componentDidMount(){
-    console.log(this.props.product)
-    this.props.getProductAttributes(this.props.product.ProductId)
-  }
   componentWillReceiveProps() {
 
     const { moveToCart } = this.props;
@@ -20,11 +16,8 @@ class ProductView extends Component {
   }
 
   render() {
-    const { product, value, addedtocart } = this.props;
-  
-    // let productSize = product.size.map((size, i) => {
-    //   return <option key={i}>{size}</option>;
-    // });
+    const { product, value, addedtocart, allAttributes} = this.props;
+   
     return (
       <section className="ftco-section bg-light">
         <div className="container">
@@ -53,6 +46,11 @@ class ProductView extends Component {
                         <span className="ion-ios-arrow-down" />
                       </div>
                       <select name="text" id="" className="form-control">
+                        {allAttributes.map(attributes =>{
+                          return(
+                          <option> {attributes.attribute_value}</option>
+                          )
+                        })}
                         {/* {productSize} */}
                       </select>
                     </div>
@@ -105,14 +103,15 @@ class ProductView extends Component {
   }
 }
 const mapStateToProps = state => {
-  const { value, moveToCart } = state.Shop;
+  const { value, moveToCart, allAttributes } = state.Shop;
   return {
     value,
-    moveToCart
+    moveToCart,
+    allAttributes
   };
 };
 export default withRouter(
-  connect(mapStateToProps, { incrementItem, decreaseItem, handler, getProductAttributes })(
+  connect(mapStateToProps, { incrementItem, decreaseItem, handler})(
     ProductView
   )
 );

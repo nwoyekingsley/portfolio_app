@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { handler } from "../Redux/Actions";
+import { handler, deleteCartProducts } from "../Redux/Actions";
 
 class ProductDetail extends Component {
   render() {
     const { addedCart, value } = this.props;
-
     return (
       <section className="ftco-section ftco-cart">
         <div className="container">
@@ -29,7 +28,7 @@ class ProductDetail extends Component {
                       return (
                         <tr key={addedData.ProductId} className="text-center">
                           <td className="product-remove">
-                            <Link to="#">
+                            <Link to="/cart" onClick = {this.props.deleteCartProducts(addedData.item_id)}>
                               <span className="ion-ios-close" />
                             </Link>
                           </td>
@@ -53,12 +52,13 @@ class ProductDetail extends Component {
                                 type="text"
                                 name="quantity"
                                 className="quantity form-control input-number"
-                                value={value}
+                                value={addedData.Quantity}
+                                disabled
                                 onChange={e => this.props.handler(e)}
                               />
                             </div>
                           </td>
-                          <td className="total">$coming Soon</td>
+                          <td className="total">{addedData.SubTotal}</td>
                         </tr>
                       );
                     })}
@@ -69,7 +69,7 @@ class ProductDetail extends Component {
           </div>
           <div className="row justify-content-center">
             <div className="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
-              <div className="cart-total mb-3">
+              {/* <div className="cart-total mb-3">
                 <h3>Cart Totals</h3>
                 <p className="d-flex">
                   <span>Subtotal</span>
@@ -88,7 +88,7 @@ class ProductDetail extends Component {
                   <span>Total</span>
                   <span>$3.00</span>
                 </p>
-              </div>
+              </div> */}
               <p className="text-center">
                 <Link to="/checkout" className="btn btn-primary py-3 px-4">
                   Proceed to Checkout
@@ -110,4 +110,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { handler })(ProductDetail);
+export default connect(mapStateToProps, { handler, deleteCartProducts})(ProductDetail);

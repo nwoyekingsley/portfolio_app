@@ -22,6 +22,7 @@ export const getallProducts = () => {
 
 //Get one Product
 export const getOneProduct = product_id => {
+  console.log(product_id, 'product_id')
   return dispatch => {
     axios
       .get(
@@ -47,7 +48,6 @@ export const getProductAttributes = product_id => {
         `http://ogbuifymark-001-site2.btempurl.com/attributes/inProduct/${product_id}`
       )
       .then(res => {
-        console.log(res.data, 'i am attributes')
         dispatch({
           type: GET_ATTRIBUTES,
           payload: res.data
@@ -63,14 +63,13 @@ export const getProductAttributes = product_id => {
 //Get Products from Cart
 export const getCartProducts = () => {
   let cart_id = JSON.parse(localStorage.getItem('cartId'))
-  console.log(cart_id, 'get cartid products')
+ 
   return dispatch => {
     axios
       .get(
         `http://ogbuifymark-001-site2.btempurl.com/shoppingcart/${cart_id}`
       )
       .then(res => {
-        console.log(res.data, 'i am cart things')
         dispatch({
           type: ADD_TO_CART,
           payload: res.data
@@ -84,14 +83,13 @@ export const getCartProducts = () => {
 
 //Delete Product from Cart
 export const deleteCartProducts = (data) => {
-
   return dispatch => {
     axios
       .delete(
         `http://ogbuifymark-001-site2.btempurl.com/shoppingcart/removeProduct/${data}`
       )
       .then(res => {
-        console.log(res.data, 'i am deleted things things')
+       
         dispatch(getCartProducts());
       })
       .catch(err => {
