@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 import { handler, deleteCartProducts } from "../Redux/Actions";
 
 class ProductDetail extends Component {
+  
   render() {
     const { addedCart, value } = this.props;
+    console.log({addedCart})
     return (
       <section className="ftco-section ftco-cart">
         <div className="container">
@@ -24,11 +26,11 @@ class ProductDetail extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {addedCart.length == 0 ? <tr> </tr> : addedCart.map(addedData => {
+                    {addedCart.length == 0 ?null : addedCart.map(addedData => {
                       return (
-                        <tr key={addedData.ProductId} className="text-center">
+                        <tr key={addedData.item_id} className="text-center">
                           <td className="product-remove">
-                            <Link to="/cart" onClick = {this.props.deleteCartProducts(addedData.item_id)}>
+                            <Link to="/cart" onClick = {()=>this.props.deleteCartProducts(addedData.item_id)}>
                               <span className="ion-ios-close" />
                             </Link>
                           </td>

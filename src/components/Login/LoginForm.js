@@ -71,7 +71,7 @@ class LoginForm extends Component {
                           Login
                         </Link>
                         <hr />
-                        <Link
+                        {/* <Link
                           to="/"
                           className="btn btn-google btn-user btn-block"
                         >
@@ -84,7 +84,7 @@ class LoginForm extends Component {
                         >
                           <i className="fab fa-facebook-f fa-fw" /> Login with
                           Facebook
-                        </Link>
+                        </Link> */}
                       </form>
                       <hr />
                       <div className="text-center">

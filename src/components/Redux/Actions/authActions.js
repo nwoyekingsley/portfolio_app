@@ -1,4 +1,5 @@
 import axios from "axios";
+import {apiUrl} from './../../Script/config'
 
 //Login Customers
 export const loginCustomer = (email, password) => {
@@ -7,8 +8,8 @@ export const loginCustomer = (email, password) => {
   bodyFormData.set("password", password);
   return dispatch => {
     axios
-      .post(
-        "http://ogbuifymark-001-site2.btempurl.com/customers/login",
+      .post(apiUrl +
+        "customers/login",
         bodyFormData
       )
       .then(response => {
@@ -32,7 +33,7 @@ export const registerCustomer = (firstName, email, password) => {
   return dispatch => {
     // performing a post requst
     axios
-      .post("http://ogbuifymark-001-site2.btempurl.com/customers", bodyFormData)
+      .post(apiUrl+"customers", bodyFormData)
       .then(response => {
         // Handle the success
         console.log(response, "i am res 2");

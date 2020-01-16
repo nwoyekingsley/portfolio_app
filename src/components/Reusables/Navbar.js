@@ -11,7 +11,7 @@ class Navbar extends Component {
       >
         <div className="container">
           <Link className="navbar-brand" to="/">
-            Modist
+            Goterem
           </Link>
           <button
             className="navbar-toggler collapsed"

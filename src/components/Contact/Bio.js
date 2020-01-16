@@ -58,8 +58,9 @@ class Bio extends Component {
             <div className="col-md-3 d-flex">
               <div className="info bg-white p-4">
                 <p>
-                  <span>Address:</span> 198 West 21th Street, Suite 721 New York
-                  NY 10016
+                  <span>Address:</span> 9 Ikem Street
+Abakpa Nike
+Enugu
                 </p>
               </div>
             </div>
@@ -67,7 +68,7 @@ class Bio extends Component {
               <div className="info bg-white p-4">
                 <p>
                   <span>Phone:</span>{" "}
-                  <Link to="tel://1234567920">+ 1235 2355 98</Link>
+                  <Link to="tel://1234567920">+2348171069007</Link>
                 </p>
               </div>
             </div>
@@ -75,14 +76,14 @@ class Bio extends Component {
               <div className="info bg-white p-4">
                 <p>
                   <span>Email:</span>{" "}
-                  <Link to="mailto:info@yoursite.com">info@yoursite.com</Link>
+                  <Link to="mailto:Goteremonline@gmail.com">Goteremonline@gmail.com</Link>
                 </p>
               </div>
             </div>
             <div className="col-md-3 d-flex">
               <div className="info bg-white p-4">
                 <p>
-                  <span>Website</span> <Link to="#">yoursite.com</Link>
+                  <span>Website</span> <Link to="#">www.goterem.com</Link>
                 </p>
               </div>
             </div>

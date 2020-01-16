@@ -29,7 +29,6 @@ class ProductSingle extends Component {
         <ProductsSingle />
         <ProductView
           product={oneProduct}
-          addedtocart={() => this.props.addedtocart(oneProduct)}
         />
         <Subscribe />
         <Footer />

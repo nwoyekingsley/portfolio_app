@@ -11,6 +11,7 @@ import {
 } from "./Types";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {apiUrl} from './../../Script/config'
 
 
 
@@ -41,6 +42,20 @@ export const decreaseItem = value => {
   };
 };
 
+// SET ATTRIBUTE BUTTON IN MY PRODUCT_SINGLE_PAGE
+export const setAttribut = value => {
+  return dispatch => {
+    let newValue = parseInt(value) - 1;
+    if (newValue === 0) {
+      return;
+    }
+    dispatch({
+      type: DECREASE_ITEM,
+      payload: newValue
+    });
+  };
+};
+
 // IT WORKS FOR MY INPUT VALUE SEARCH BOX IN MY PRODUCT_SINGLE_PAGE
 export const handler = e => {
   let newValue = e.target.value;
@@ -55,22 +70,23 @@ export const handler = e => {
 
 
 //THIS IS MY ADD_TO_CART / TAKES_TO_CART / RETURNS_TO_CART AND ALSO I MAKE USE OF SWEETALERT2
-export const addedtocart = data => {
+export const addedtocart = (data, atttributes) => {
   return dispatch => {
     let cartId = JSON.parse(localStorage.getItem('cartId'))
-    let atttributes = {
-      "attribute_value_id": 2,
-      "attribute_name": "Size",
-      "attribute_value": "M"
-    }
+    console.log(atttributes)
+    // let atttributes = {
+    //   "attribute_value_id": 2,
+    //   "attribute_name": "Size",
+    //   "attribute_value": "M"
+    // }
    
     if (cartId !== null) {
       let bodyFormData = new FormData();
       bodyFormData.set("cart_id", cartId);
       bodyFormData.set("product_id", data.product_id);
-      bodyFormData.set("attributes", atttributes);
+      bodyFormData.set("attributes", JSON.stringify(atttributes));
 
-      axios.post('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/add', bodyFormData)
+      axios.post(apiUrl+'shoppingcart/add', bodyFormData)
       .then(res =>{
         console.log(res, cartId, ' i am addding to rrr')
         Swal.fire({
@@ -104,11 +120,11 @@ export const addedtocart = data => {
       bodyFormData.set("product_id", data.product_id);
       bodyFormData.set("attributes", atttributes);
 
-      axios.get('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/generateUniqueId')
+      axios.get(apiUrl+'shoppingcart/generateUniqueId')
       .then(res =>{
           localStorage.setItem('cartId', JSON.stringify(res.data.cart_id));
           bodyFormData.set("cart_id", res.data.cart_id);
-          axios.post('http://ogbuifymark-001-site2.btempurl.com/shoppingcart/add', bodyFormData)
+          axios.post(apiUrl+'shoppingcart/add', bodyFormData)
           .then(res =>{
             console.log(res, ' i am addding to rrr', res.data.cart_id)
             Swal.fire({

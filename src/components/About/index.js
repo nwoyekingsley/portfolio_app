@@ -17,7 +17,7 @@ class About extends Component {
         <Navheader />
         <AboutHeader />
         <Fashion />
-        <Testimony />
+        {/* <Testimony /> */}
         <Feeds />
         <Services />
         <Subscribe />

@@ -12,6 +12,7 @@ class Testimony extends Component {
               <h1 className="big">Testimony</h1>
             </div>
           </div>
+          
           <div className="row justify-content-center">
             <div className="col-md-8 ftco-animate">
               <div className="row ftco-animate">

@@ -81,7 +81,7 @@ class Register extends Component {
                       Register Account
                     </button>
                     <hr />
-                    <Link to="/" className="btn btn-google btn-user btn-block">
+                    {/* <Link to="/" className="btn btn-google btn-user btn-block">
                       <i className="fab fa-google fa-fw" /> Register with Google
                     </Link>
                     <Link
@@ -90,7 +90,7 @@ class Register extends Component {
                     >
                       <i className="fab fa-facebook-f fa-fw" /> Register with
                       Facebook
-                    </Link>
+                    </Link> */}
                   </form>
                   <hr />
                   <div className="text-center">

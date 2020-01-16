@@ -9,7 +9,7 @@ class Footer extends Component {
           <div className="row mb-5">
             <div className="col-md">
               <div className="ftco-footer-widget mb-4">
-                <h2 className="ftco-heading-2">Modist</h2>
+                <h2 className="ftco-heading-2">Goterem</h2>
                 <ul className="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                   <li className="ftco-animate">
                     <Link to="#">
@@ -105,20 +105,21 @@ class Footer extends Component {
                     <li>
                       <span className="icon icon-map-marker" />
                       <span className="text">
-                        203 Fake St. Mountain View, San Francisco, California,
-                        USA
+                      9 Ikem Street,
+Abakpa Nike,
+Enugu
                       </span>
                     </li>
                     <li>
                       <Link to="#">
                         <span className="icon icon-phone" />
-                        <span className="text">+2 392 3929 210</span>
+                        <span className="text">+2348171069007</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="#">
                         <span className="icon icon-envelope" />
-                        <span className="text">info@yourdomain.com</span>
+                        <span className="text">Goteremonline@gmail.com</span>
                       </Link>
                     </li>
                   </ul>
@@ -130,11 +131,9 @@ class Footer extends Component {
             <div className="col-md-12 text-center">
               <p>
                 {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                Copyright © All rights reserved | This template is made with{" "}
-                <i className="icon-heart color-danger" aria-hidden="true" /> by{" "}
-                <Link to="https://colorlib.com" target="_blank">
-                  Colorlib
-                </Link>
+                Copyright © All rights reserved {new Date().getFullYear() + " "} 
+                 <i className="icon-heart color-danger" aria-hidden="true" /> Powered by Abuchi { new Date().getFullYear()}
+                
                 {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
               </p>
             </div>

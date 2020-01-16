@@ -49,7 +49,7 @@ class ShopWorld extends Component {
                             <div className="pricing">
                               <p className="price">
                                 <span className="mr-2 price-dc">
-                                  {product.DiscountedPrice}
+                                  {product.DiscountedPrice > 0 ?product.DiscountedPrice:null}
                                 </span>
                                 <span className="price-sale">
                                   {product.Price}

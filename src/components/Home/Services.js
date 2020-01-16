@@ -20,8 +20,7 @@ class Services extends Component {
                 <div className="media-body">
                   <h3 className="heading">Refund Policy</h3>
                   <p>
-                    Even the all-powerful Pointing has no control about the
-                    blind texts it is an almost unorthographic.
+                  No stress, Lifetime, 100% refund. As long as item is unused.
                   </p>
                 </div>
               </div>
@@ -34,8 +33,8 @@ class Services extends Component {
                 <div className="media-body">
                   <h3 className="heading">Premium Packaging</h3>
                   <p>
-                    Even the all-powerful Pointing has no control about the
-                    blind texts it is an almost unorthographic.
+                  All out items are packed with bubbles and special protective materials to ensure no damage is done
+during transit.
                   </p>
                 </div>
               </div>
@@ -48,8 +47,7 @@ class Services extends Component {
                 <div className="media-body">
                   <h3 className="heading">Superior Quality</h3>
                   <p>
-                    Even the all-powerful Pointing has no control about the
-                    blind texts it is an almost unorthographic.
+                  We deal only in high quality products that meets and/or exceeds global standards.
                   </p>
                 </div>
               </div>

@@ -1,12 +1,17 @@
 import { GET_PRODUCTS, GET_ONE_PRODUCT, ADD_TO_CART, GET_ATTRIBUTES } from "./Types";
-
+import {apiUrl} from './../../Script/config'
 import axios from "axios";
 
 // INTCREMENT_ITEM BUTTON IN MY PRODUCT_SINGLE
-export const getallProducts = () => {
+export const getallProducts = (page,limit) => {
   return dispatch => {
+
+    
     axios
-      .get("http://ogbuifymark-001-site2.btempurl.com/products")
+      .get(apiUrl +"products", {params: {
+        limit: limit,
+        page : page
+      }})
       .then(res => {
         console.log(res, 'i am res')
         dispatch({
@@ -23,10 +28,11 @@ export const getallProducts = () => {
 //Get one Product
 export const getOneProduct = product_id => {
   console.log(product_id, 'product_id')
+  console.log(apiUrl+`products/${product_id}/details`)
   return dispatch => {
     axios
       .get(
-        `http://ogbuifymark-001-site2.btempurl.com/products/${product_id}/details`
+        apiUrl+`products/${product_id}/details`
       )
       .then(res => {
         dispatch({
@@ -44,8 +50,8 @@ export const getOneProduct = product_id => {
 export const getProductAttributes = product_id => {
   return dispatch => {
     axios
-      .get(
-        `http://ogbuifymark-001-site2.btempurl.com/attributes/inProduct/${product_id}`
+      .get(apiUrl+
+        `attributes/inProduct/${product_id}`
       )
       .then(res => {
         dispatch({
@@ -63,11 +69,11 @@ export const getProductAttributes = product_id => {
 //Get Products from Cart
 export const getCartProducts = () => {
   let cart_id = JSON.parse(localStorage.getItem('cartId'))
- 
+ console.log({cart_id})
   return dispatch => {
     axios
-      .get(
-        `http://ogbuifymark-001-site2.btempurl.com/shoppingcart/${cart_id}`
+      .get(apiUrl +
+        `shoppingcart/${cart_id}`
       )
       .then(res => {
         dispatch({
@@ -85,8 +91,8 @@ export const getCartProducts = () => {
 export const deleteCartProducts = (data) => {
   return dispatch => {
     axios
-      .delete(
-        `http://ogbuifymark-001-site2.btempurl.com/shoppingcart/removeProduct/${data}`
+      .delete(apiUrl+
+        `shoppingcart/removeProduct/${data}`
       )
       .then(res => {
        

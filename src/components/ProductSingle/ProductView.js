@@ -2,11 +2,18 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { incrementItem,  decreaseItem, handler} from "../Redux/Actions";
+import { incrementItem, addedtocart, decreaseItem, handler} from "../Redux/Actions";
 
 
 class ProductView extends Component {
-
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      selectValue: null,
+      attribute: null
+    };
+  }
   componentWillReceiveProps() {
 
     const { moveToCart } = this.props;
@@ -14,16 +21,24 @@ class ProductView extends Component {
       this.props.history.push("/cart");
     }
   }
+  handleChange(e){
+    
+    
+    let atttributes = this.props.allAttributes.filter(p=>p.attribute_value == e.target.value)[0]
+    this.setState({selectValue:e.target.value});
+    this.setState({attribute:atttributes})
+    
+
+  }
 
   render() {
     const { product, value, addedtocart, allAttributes} = this.props;
-   
     return (
       <section className="ftco-section bg-light">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 mb-5 ftco-animate">
-              <Link to="/Assets/images/menu-2.jpg" className="image-popup">
+              <Link to={product.Image} className="image-popup">
                 <img
                   src={product.Image}
                   className="img-fluid"
@@ -45,10 +60,13 @@ class ProductView extends Component {
                       <div className="icon">
                         <span className="ion-ios-arrow-down" />
                       </div>
-                      <select name="text" id="" className="form-control">
+                      <select
+                      value={this.state.selectValue} 
+                      onChange={(e) => this.handleChange(e)} 
+                       name="text" id="" className="form-control">
                         {allAttributes.map(attributes =>{
                           return(
-                          <option> {attributes.attribute_value}</option>
+                          <option key= {attributes.attribute_value_id} > {attributes.attribute_value}</option>
                           )
                         })}
                         {/* {productSize} */}
@@ -90,7 +108,9 @@ class ProductView extends Component {
                   </span>
                 </div>
               </div>
-              <p onClick={addedtocart}>
+              {/* addedtocart={() => this.props.addedtocart(oneProduct)} */}
+
+              <p onClick={() => this.props.addedtocart(product, this.state.attribute)}>
                 <Link to="#" className="btn btn-primary py-3 px-5">
                   Add to Cart
                 </Link>
@@ -111,7 +131,7 @@ const mapStateToProps = state => {
   };
 };
 export default withRouter(
-  connect(mapStateToProps, { incrementItem, decreaseItem, handler})(
+  connect(mapStateToProps, { incrementItem,addedtocart, decreaseItem, handler})(
     ProductView
   )
 );

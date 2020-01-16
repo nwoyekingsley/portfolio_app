@@ -7,17 +7,17 @@ class Statis extends Component {
       <div>
         <div
           className="hero-wrap js-fullheight"
-          style={{ backgroundImage: 'url("/Assets/images/bg_1.jpg")' }}
+          style={{ backgroundImage: 'url("/Assets/images/bg_11.jpg")' }}
         >
           <div className="overlay" />
           <div className="container">
             <div className="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-              <h3 className="v">Modist - Time to get dress</h3>
-              <h3 className="vr">Since - 1985</h3>
+              <h3 className="v">Goterem - Time to style up</h3>
+              <h3 className="vr"></h3>
               <div className="col-md-11 ftco-animate text-center">
-                <h1>Le Stylist</h1>
+                <h1>The Stylist</h1>
                 <h2>
-                  <span>Wear Your Dress</span>
+                  <span>Style up</span>
                 </h2>
               </div>
               <div className="mouse">
