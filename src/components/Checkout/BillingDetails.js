@@ -135,7 +135,7 @@ class BillingDetails extends Component {
     return items;
   }
   render() {
-    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword } = this.props;
+    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword , mob_phone} = this.props;
     return (
       <section className="ftco-section">
         <div className="container">
@@ -248,25 +248,41 @@ class BillingDetails extends Component {
                         onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                       />
                     </div>
-                    <div className="col-sm-6 ">
-
-                      <select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
-                        <option key={0}className="">Select country</option>
-                        {this.renderCountriesDropdownItems()}
-                      </select>
+                    <div className="col-sm-6">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='mob_phone'
+                        value={mob_phone}
+                        id="exampleInputAddress"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter phonenumber"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
                     </div>
+                    
                     
                     
                   </div>
                   <div className="form-group row">
-                  <div className="col-md-6 mb-3 mb-sm-0">
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+
+<select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
+  <option key={0}className="">Select country</option>
+  {this.renderCountriesDropdownItems()}
+</select>
+</div>
+                  <div className="col-md-6 ">
 
 <select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
   <option key={0} className="">Select state</option>
   {this.renderStatesDropdownItems()}
 </select>
 </div>
-                    <div className="col-sm-6 ">
+                   
+                    </div>
+                    <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
                     <select
                         name="city"
                         className="form-control"
@@ -446,7 +462,7 @@ class BillingDetails extends Component {
 
 const mapStateToProps = state => {
   const { paymentType } = state.Shop;
-  const { firstName, email, password, repeatPassword, loginPassword, loginEmail } = state.Form;
+  const { firstName, email, password, repeatPassword, loginPassword, loginEmail, mob_phone } = state.Form;
   return {
     paymentType,
     firstName,
@@ -454,7 +470,8 @@ const mapStateToProps = state => {
     password,
     repeatPassword,
     loginPassword,
-    loginEmail
+    loginEmail,
+    mob_phone
   };
 };
 
