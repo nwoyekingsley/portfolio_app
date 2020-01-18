@@ -1,118 +1,332 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from "axios";
+import { apiUrl } from './../Script/config'
+import { countries } from './../countries';
+
+
 import {
   clickedPayStack,
   clickedPayBank,
   clickedPayCheck,
-  changePaymentTypes
-} from "../Redux/Actions/shopAction";
+  changePaymentTypes,
+  loginCustomer,
+  getFormData,
+  registerCustomer,
+  checkPassword
+} from "../Redux/Actions";
 
 class BillingDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showRegistration: 'none',
+      showLogin: '',
+      countries: countries,
+      States: [],
+      Cities: [],
+      CountryID: '',
+      StateID: '',
+      CityID: ''
+    };
+  }
+  handleSwitchLogingRegister(value) {
+    if (value == 'login') {
+      this.setState({ showRegistration: 'none' });
+      this.setState({ showLogin: 'block' })
+    }
+    else {
+      this.setState({ showLogin: 'none' });
+      this.setState({ showRegistration: 'block' })
+    }
+  }
+  handleCountryChange(event) {
+    event.preventDefault();
+    event.persist()
+    const { value } = event.target;
+    axios
+      .get(apiUrl +
+        "utility/state/" + value
+      )
+      .then(res => {
+        console.log(res.data)
+        this.setState({
+          States: res.data,
+          CountryID: value
+
+        });
+        this.props.getFormData({ props: event.target.name, value: event.target.value })
+        this.renderStatesDropdownItems()
+      })
+      .catch(error => {
+
+        console.log(error, "i am the error 1");
+      });
+
+
+  }
+
+
+  //handleCountryChange
+  handleStateChange(event) {
+    event.preventDefault();
+    event.persist()
+    const { value } = event.target;
+    axios
+      .get(apiUrl +
+        "utility/city/" + value
+      )
+      .then(res => {
+        this.setState({
+          Cities: res.data,
+          StateID: value
+        });
+        this.props.getFormData({ props: event.target.name, value: event.target.value })
+        this.renderCitiesDropdownItems()
+      })
+      .catch(error => {
+
+        console.log(error, "i am the error 1");
+      });
+
+  }
+
+  //country
+  renderCountriesDropdownItems() {
+    var items = [];
+
+    for (var i = 0; i < this.state.countries.length; i++) {
+      var item = this.state.countries[i];
+
+      items.push(
+        <option key={item.id} className="selectoptiondropdown" value={item.id} >{item.name}</option>
+      );
+    }
+    return items;
+  }
+
+  //states dropdown
+  renderStatesDropdownItems() {
+
+    var items = [];
+
+    for (var i = 0; i < this.state.States.length; i++) {
+      var item = this.state.States[i];
+
+      items.push(
+        <option key={item.StateID} className="selectoptiondropdown" value={item.StateID} >{item.name}</option>
+      );
+    }
+    return items;
+  }
+  //cities dropdown
+  renderCitiesDropdownItems() {
+    var items = [];
+
+    for (var i = 0; i < this.state.Cities.length; i++) {
+      var item = this.state.Cities[i];
+
+      items.push(
+        <option key={item.CityID} className="selectoptiondropdown" value={item.cityID}>{item.name}</option>
+      );
+    }
+    return items;
+  }
   render() {
-    const { paymentType } = this.props;
+    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword } = this.props;
     return (
       <section className="ftco-section">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-10 ftco-animate">
-              <form action="#" className="billing-form">
-                <h3 className="mb-4 billing-heading">Billing Details</h3>
-                <div className="row align-items-end">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="firstname">First Name</label>
-                      <input type="text" className="form-control" />
-                    </div>
+              
+              <div className="login" style={{ display: this.state.showLogin }}>
+                <form className="user">
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      className="form-control "
+                      name='loginEmail'
+                      value={loginEmail}
+                      id="exampleInputEmail"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter Email Address..."
+                      onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                    />
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="lastname">Last Name</label>
-                      <input type="text" className="form-control" />
-                    </div>
+                  <div className="form-group">
+                    <input
+                      type="password"
+                      className="form-control "
+                      id="exampleInputPassword"
+                      placeholder="Password"
+                      value={loginPassword}
+                      name='loginPassword'
+                      onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                    />
                   </div>
-                  <div className="w-100" />
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label htmlFor="country">State / Country</label>
-                      <div className="select-wrap">
-                        <div className="icon">
-                          <span className="ion-ios-arrow-down" />
-                        </div>
-                        <select name="name" className="form-control">
-                          <option value>France</option>
-                          <option value>Italy</option>
-                          <option value>Philippines</option>
-                          <option value>South Korea</option>
-                          <option value>Hongkong</option>
-                          <option value>Japan</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-100" />
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="streetaddress">Street Address</label>
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox small">
                       <input
-                        type="text"
-                        className="form-control"
-                        placeholder="House number and street name"
+                        type="checkbox"
+                        className="custom-control-input"
+                        id="customCheck"
                       />
+                      <label
+                        className="custom-control-label"
+                        htmlFor="customCheck"
+                      >
+                        Remember Me
+                            </label>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Appartment, suite, unit etc: (optional)"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-100" />
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="towncity">Town / City</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="postcodezip">Postcode / ZIP *</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="w-100" />
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="phone">Phone</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="emailaddress">Email Address</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="w-100" />
-                  <div className="col-md-12">
-                    <div className="form-group mt-4">
-                      <div className="radio">
-                        <label className="mr-3">
-                          <input type="radio" name="optradio" /> Create an
-                          Account?{" "}
-                        </label>
-                        <label>
-                          <input type="radio" name="optradio" /> Ship to
-                          different address
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                  <Link
+                    to="/"
+                    className="btn btn-primary btn-user btn-block"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.loginCustomer(loginEmail, loginPassword);
+                    }}
+                  >
+                    Login
+                        </Link>
+                  <hr />
+
+                </form>
+
+                <hr />
+                <div className="text-center">
+                  <Link className="small" to="/forgotpassword">
+                    Forgot Password?
+                        </Link>
                 </div>
-              </form>
+                <div className="text-center">
+                  <Link className="small" onClick={() => this.handleSwitchLogingRegister('Register')} >
+                    Create an Account!
+                        </Link>
+                </div>
+              </div>
+              <div className="register" style={{ display: this.state.showRegistration }}>
+                <form className="user">
+                  <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='firstName'
+                        value={firstName}
+                        id="exampleEnterYouName"
+                        placeholder="Enter You Name"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-6">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='email'
+                        value={email}
+                        id="exampleInputEmail"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter Email Address..."
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='Address_1'
+                        value={email}
+                        id="exampleInputAddress"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter Address..."
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-6 ">
+
+                      <select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
+                        <option key={0}className="">Select country</option>
+                        {this.renderCountriesDropdownItems()}
+                      </select>
+                    </div>
+                    
+                    
+                  </div>
+                  <div className="form-group row">
+                  <div className="col-md-6 mb-3 mb-sm-0">
+
+<select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
+  <option key={0} className="">Select state</option>
+  {this.renderStatesDropdownItems()}
+</select>
+</div>
+                    <div className="col-sm-6 ">
+                    <select
+                        name="city"
+                        className="form-control"
+                        value={this.state.CityID}
+                        onChange={(e) => {this.props.getFormData({ props: e.target.name, value: e.target.value });this.setState({CityID:e.target.value})} }>
+                        <option key={0} className="">Select city</option>
+                        {this.renderCitiesDropdownItems()}
+                      </select>
+                    </div>
+                    </div>
+                  <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        value={password}
+                        id="exampleInputPassword"
+                        placeholder="Password"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-6">
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="repeatPassword"
+                        value={repeatPassword}
+                        id="exampleRepeatPassword"
+                        placeholder="Repeat Password"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    disabled={checkPassword(password, repeatPassword)}
+                    className="btn btn-primary btn-user btn-block"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.registerCustomer(firstName, email, password);
+                    }}
+                  >
+                    Register Account
+                    </button>
+                  <hr />
+
+                </form>
+                <hr />
+                <div className="text-center">
+                  <Link className="small" to="/forgotpassword">
+                    Forgot Password?
+                    </Link>
+                </div >
+                <div className="text-center">
+                  <Link className="small" onClick={() => this.handleSwitchLogingRegister('login')}>
+                    Already have an account? Login!
+                    </Link>
+                </div>
+              </div>
+
               {/* END */}
               <div className="row mt-5 pt-3 d-flex">
                 <div className="col-md-6 d-flex">
@@ -232,8 +446,15 @@ class BillingDetails extends Component {
 
 const mapStateToProps = state => {
   const { paymentType } = state.Shop;
+  const { firstName, email, password, repeatPassword, loginPassword, loginEmail } = state.Form;
   return {
-    paymentType
+    paymentType,
+    firstName,
+    email,
+    password,
+    repeatPassword,
+    loginPassword,
+    loginEmail
   };
 };
 
@@ -241,5 +462,8 @@ export default connect(mapStateToProps, {
   clickedPayStack,
   clickedPayCheck,
   clickedPayBank,
-  changePaymentTypes
+  changePaymentTypes,
+  loginCustomer,
+  getFormData,
+  registerCustomer
 })(BillingDetails);

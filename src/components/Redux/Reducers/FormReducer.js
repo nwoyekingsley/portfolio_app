@@ -5,6 +5,14 @@ const initialState = {
   email: "",
   password: "",
   repeatPassword: "",
+  Address_1:"",
+  city:"",
+  region:"",
+  postal_code:"",
+  country:"",
+  shipping_region_id:"",
+  mob_phone:"",
+  eve_phone:""
 };
 
 // function repeatPassword() {

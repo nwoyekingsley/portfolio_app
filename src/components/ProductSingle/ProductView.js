@@ -11,7 +11,8 @@ class ProductView extends Component {
   
     this.state = {
       selectValue: null,
-      attribute: null
+      attribute: null,
+      quantity:1
     };
   }
   componentWillReceiveProps() {
@@ -30,6 +31,25 @@ class ProductView extends Component {
     
 
   }
+  handledecreaseItem(value){
+    let newValue = parseInt(value) - 1;
+    if (newValue === 0) {
+      return;
+    }
+    this.setState({quantity: newValue})
+  }
+
+  handleincreaseItem(value){
+    let newValue = parseInt(value) + 1;
+    if (newValue === 0) {
+      return;
+    }
+    this.setState({quantity: newValue})
+  }
+  handler = e => {
+    let newValue = e.target.value;
+    this.setState({quantity: newValue})
+  };
 
   render() {
     const { product, value, addedtocart, allAttributes} = this.props;
@@ -82,7 +102,7 @@ class ProductView extends Component {
                       className="quantity-left-minus btn"
                       data-type="minus"
                       data-field
-                      onClick={() => this.props.decreaseItem(value)}
+                      onClick={() => this.handledecreaseItem(this.state.quantity)}
                     >
                       <i className="ion-ios-remove" />
                     </button>
@@ -92,8 +112,8 @@ class ProductView extends Component {
                     id="quantity"
                     name="quantity"
                     className="form-control input-number"
-                    value={value}
-                    onChange={e => this.props.handler(e)}
+                    value={this.state.quantity}
+                    onChange={e => this.handler(e)}
                   />
                   <span className="input-group-btn ml-2">
                     <button
@@ -101,7 +121,7 @@ class ProductView extends Component {
                       className="quantity-right-plus btn"
                       data-type="plus"
                       data-field
-                      onClick={() => this.props.incrementItem(value)}
+                      onClick={() => this.handleincreaseItem(this.state.quantity)}
                     >
                       <i className="ion-ios-add" />
                     </button>
@@ -110,7 +130,7 @@ class ProductView extends Component {
               </div>
               {/* addedtocart={() => this.props.addedtocart(oneProduct)} */}
 
-              <p onClick={() => this.props.addedtocart(product, this.state.attribute)}>
+              <p onClick={() => this.props.addedtocart(product, this.state.attribute, this.state.quantity)}>
                 <Link to="#" className="btn btn-primary py-3 px-5">
                   Add to Cart
                 </Link>

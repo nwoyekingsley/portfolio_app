@@ -70,50 +70,57 @@ export const handler = e => {
 
 
 //THIS IS MY ADD_TO_CART / TAKES_TO_CART / RETURNS_TO_CART AND ALSO I MAKE USE OF SWEETALERT2
-export const addedtocart = (data, atttributes) => {
+export const addedtocart = (data, atttributes, quantity) => {
   return dispatch => {
     let cartId = JSON.parse(localStorage.getItem('cartId'))
-    console.log(atttributes)
     // let atttributes = {
     //   "attribute_value_id": 2,
     //   "attribute_name": "Size",
     //   "attribute_value": "M"
     // }
-   
     if (cartId !== null) {
+      
       let bodyFormData = new FormData();
       bodyFormData.set("cart_id", cartId);
       bodyFormData.set("product_id", data.product_id);
       bodyFormData.set("attributes", JSON.stringify(atttributes));
-
-      axios.post(apiUrl+'shoppingcart/add', bodyFormData)
-      .then(res =>{
-        console.log(res, cartId, ' i am addding to rrr')
-        Swal.fire({
-          title: "Added to Cart",
-          text: "Item is added to you Cart",
-          icon: "success",
-          showCancelButton: true,
-          cancelButtonColor: "#d33",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "GO TO CART",
-          cancelButtonText: "COUTINUE SHOPPING"
-        }).then(result => {
-          if (result.value) {
-            dispatch({
-              type: TAKES_TO_CART,
-              payload: true
-            });
-            dispatch({
-              type: RETURNS_TO_CART,
-              payload: false
+      
+        
+        axios.post(apiUrl+'shoppingcart/add', bodyFormData)
+        .then(res =>{
+          if (quantity === 1){
+            Swal.fire({
+              title: "Added to Cart",
+              text: "Item is added to you Cart",
+              icon: "success",
+              showCancelButton: true,
+              cancelButtonColor: "#d33",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "GO TO CART",
+              cancelButtonText: "COUTINUE SHOPPING"
+            }).then(result => {
+              if (result.value) {
+                dispatch({
+                  type: TAKES_TO_CART,
+                  payload: true
+                });
+                dispatch({
+                  type: RETURNS_TO_CART,
+                  payload: false
+                });
+              }
             });
           }
-        });
-      })
-      .catch(err =>{
-        console.log(err)
-      })
+          else{
+            dispatch(addedtocart(data, atttributes, quantity-1))
+          }
+          
+        })
+        .catch(err =>{
+          console.log(err)
+        })
+      
+      
    
     } else {
       let bodyFormData = new FormData();
