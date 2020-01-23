@@ -14,7 +14,8 @@ import {
   loginCustomer,
   getFormData,
   registerCustomer,
-  checkPassword
+  checkPassword,
+  customerAddress
 } from "../Redux/Actions";
 
 class BillingDetails extends Component {
@@ -23,6 +24,7 @@ class BillingDetails extends Component {
 
     this.state = {
       showRegistration: 'none',
+      showCheckout: 'none',
       showLogin: '',
       countries: countries,
       States: [],
@@ -33,13 +35,21 @@ class BillingDetails extends Component {
     };
   }
   handleSwitchLogingRegister(value) {
+  
     if (value == 'login') {
       this.setState({ showRegistration: 'none' });
       this.setState({ showLogin: 'block' })
+      this.setState({showCheckout: 'none'})
+      
     }
-    else {
+    else if (value == 'register'){
       this.setState({ showLogin: 'none' });
       this.setState({ showRegistration: 'block' })
+      this.setState({showCheckout: 'none'})
+    }else{
+      this.setState({ showLogin: 'none' });
+      this.setState({ showRegistration: 'none' })
+      this.setState({ showCheckout: 'block' })
     }
   }
   handleCountryChange(event) {
@@ -51,7 +61,6 @@ class BillingDetails extends Component {
         "utility/state/" + value
       )
       .then(res => {
-        console.log(res.data)
         this.setState({
           States: res.data,
           CountryID: value
@@ -68,6 +77,12 @@ class BillingDetails extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.loggedIn){
+     
+      this.handleSwitchLogingRegister('checkout')
+    }
+  }
 
   //handleCountryChange
   handleStateChange(event) {
@@ -88,7 +103,6 @@ class BillingDetails extends Component {
       })
       .catch(error => {
 
-        console.log(error, "i am the error 1");
       });
 
   }
@@ -135,7 +149,8 @@ class BillingDetails extends Component {
     return items;
   }
   render() {
-    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword , mob_phone} = this.props;
+    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword , mob_phone, address_1,
+       city, region, postal_code, country, shipping_region_id, address_2} = this.props;
     return (
       <section className="ftco-section">
         <div className="container">
@@ -203,7 +218,7 @@ class BillingDetails extends Component {
                         </Link>
                 </div>
                 <div className="text-center">
-                  <Link className="small" onClick={() => this.handleSwitchLogingRegister('Register')} >
+                  <Link className="small" onClick={() => this.handleSwitchLogingRegister('register')} >
                     Create an Account!
                         </Link>
                 </div>
@@ -240,8 +255,8 @@ class BillingDetails extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        name='Address_1'
-                        value={email}
+                        name='address_1'
+                        value={address_1}
                         id="exampleInputAddress"
                         aria-describedby="emailHelp"
                         placeholder="Enter Address..."
@@ -266,19 +281,18 @@ class BillingDetails extends Component {
                   </div>
                   <div className="form-group row">
                   <div className="col-sm-6 mb-3 mb-sm-0">
+                  <select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
+                    <option key={0}className="">Select country</option>
+                    {this.renderCountriesDropdownItems()}
+                  </select>
+                  </div>
+                                    <div className="col-md-6 ">
 
-<select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
-  <option key={0}className="">Select country</option>
-  {this.renderCountriesDropdownItems()}
-</select>
-</div>
-                  <div className="col-md-6 ">
-
-<select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
-  <option key={0} className="">Select state</option>
-  {this.renderStatesDropdownItems()}
-</select>
-</div>
+                  <select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
+                    <option key={0} className="">Select state</option>
+                    {this.renderStatesDropdownItems()}
+                  </select>
+                  </div>
                    
                     </div>
                     <div className="form-group row">
@@ -344,7 +358,99 @@ class BillingDetails extends Component {
               </div>
 
               {/* END */}
-              <div className="row mt-5 pt-3 d-flex">
+              <div style ={{display: this.state.showCheckout}}>
+              
+              <form className="user">
+                  <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='address_1'
+                        value={address_1}
+                        id="exampleEnterYouName"
+                        placeholder="Enter You Address"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name='address_2'
+                        value={address_2}
+                        id="exampleEnterYouName"
+                        placeholder="Another Address..."
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                   
+                  </div>
+                   <div className="form-group row">
+                      <div className="col-sm-6 mb-3 mb-sm-0">
+                      <select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
+                        <option key={0}className="">Select country</option>
+                        {this.renderCountriesDropdownItems()}
+                      </select>
+                      </div>
+                      <div className="col-sm-6 mb-3 mb-sm-0">
+                      <select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
+                    <option key={0} className="">Select state</option>
+                    {this.renderStatesDropdownItems()}
+                  </select>
+                    </div>
+                   
+                    </div>
+                   
+                  <div className="form-group row">
+                    <div className="col-sm-4 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="region"
+                        value={region}
+                        id="exampleInputPassword"
+                        placeholder="Region"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-4">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="postal_code"
+                        value={postal_code}
+                        id="exampleRepeatPassword"
+                        placeholder="Postal Code"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-sm-4">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="shipping_region_id"
+                        value={shipping_region_id}
+                        placeholder="Shipping region id"
+                        onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    disabled={checkPassword(password, repeatPassword)}
+                    className="btn btn-primary btn-user btn-block"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.customerAddress(address_1, address_2, this.state.StateID, region, postal_code, this.state.CountryID, shipping_region_id);
+                    }}
+                  >
+                   Save Address
+                    </button>
+                  <hr />
+
+                </form>
+                <hr />
+              <div className="row mt-5 pt-3 d-flex" >
                 <div className="col-md-6 d-flex">
                   <div className="cart-detail cart-total bg-light p-3 p-md-4">
                     <h3 className="billing-heading mb-4">Cart Total</h3>
@@ -369,8 +475,19 @@ class BillingDetails extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="cart-detail bg-light p-3 p-md-4">
-                    <h3 className="billing-heading mb-4">Payment Method</h3>
-                    <div className="form-group">
+                    <h3 className="billing-heading mb-4">Payment Advisory</h3>
+                    <p> Kindly make payment into your preferred bank account number below. </p>
+                      <p> Bank Name: <b>Eco Bank </b> </p>
+                      <p> Account Name: <b> Abuchi Orji</b></p>
+                      <p> Account Number: <b> 3273069643</b> </p>
+                      <br/>
+                      <p> Bank Name:<b> GT Bank</b> </p>
+                      <p> Account Name: <b>Abuchi Orji</b></p>
+                      <p> Account Number: <b> 0041861404</b></p> 
+                      
+
+                    <p> To enable us identify your order, put your <b> "Order reference code"</b> into the <b>"Remarks, Reference or Purpose"</b> tab provided by your bank</p>
+                    {/* <div className="form-group">
                       <div className="col-md-12">
                         <div className="radio">
                           <label>
@@ -435,8 +552,8 @@ class BillingDetails extends Component {
                         </div>
                       </div>
                     </div>
-                    <p>
-                      <Link
+                    <p> */}
+                      {/* <Link
                         to="#"
                         onClick={() =>
                           paymentType === "clickedPayStack"
@@ -447,12 +564,13 @@ class BillingDetails extends Component {
                       >
                         Place an order
                       </Link>
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
             </div>{" "}
             {/* .col-md-8 */}
+            </div>
           </div>
         </div>
       </section>
@@ -461,8 +579,9 @@ class BillingDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  const { paymentType } = state.Shop;
-  const { firstName, email, password, repeatPassword, loginPassword, loginEmail, mob_phone } = state.Form;
+  const { paymentType, loggedIn } = state.Shop;
+  const { firstName, email, password, repeatPassword, loginPassword, loginEmail, mob_phone,
+     address_1, city, region, postal_code, country, shipping_region_id, address_2} = state.Form;
   return {
     paymentType,
     firstName,
@@ -471,7 +590,11 @@ const mapStateToProps = state => {
     repeatPassword,
     loginPassword,
     loginEmail,
-    mob_phone
+    mob_phone,
+    loggedIn,
+    address_1, city, region, postal_code, country, shipping_region_id,
+    address_2
+
   };
 };
 
@@ -482,5 +605,6 @@ export default connect(mapStateToProps, {
   changePaymentTypes,
   loginCustomer,
   getFormData,
-  registerCustomer
+  registerCustomer,
+  customerAddress
 })(BillingDetails);

@@ -11,7 +11,8 @@ import {
   CHANGEPAYMENT_TYPES,
   GET_PRODUCTS,
   GET_ONE_PRODUCT,
-  GET_ATTRIBUTES
+  GET_ATTRIBUTES,
+  LOGIN_SUCCESS
 } from "../Actions/Types";
 
 const initialState = {
@@ -22,7 +23,8 @@ const initialState = {
   paymentType: "",
   products: [],
   oneProduct: {},
-  allAttributes: []
+  allAttributes: [],
+  loggedIn: false
 };
 
 const ShopReducer = (state = initialState, action) => {
@@ -65,6 +67,9 @@ const ShopReducer = (state = initialState, action) => {
 
     case GET_ATTRIBUTES:
       return{...state, allAttributes: action.payload}
+
+    case LOGIN_SUCCESS:
+        return{...state, loggedIn: action.payload}
     default:
       return state;
   }
