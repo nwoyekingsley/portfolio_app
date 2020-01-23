@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {getallProducts} from '../Redux/Actions'
+// import Pagination from "react-js-pagination";
+// require("bootstrap/less/bootstrap.less");
 
 class ShopWorld extends Component {
+  
+
 
   componentWillMount() {
     this.props.getallProducts();
@@ -115,6 +119,13 @@ class ShopWorld extends Component {
               </div>
             </div>
           </div> */}
+          {/* <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={450}
+          pageRangeDisplayed={5}
+          onChange={()=>this.handlePageChange}
+        /> */}
         </div>
       </section>
     );

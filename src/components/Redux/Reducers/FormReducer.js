@@ -30,6 +30,7 @@ const FormReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case GET_FORM_DETAIL:
+      console.log( [action.payload.props], action.payload.value)
       return { ...state, [action.payload.props]: action.payload.value }
 
     default:
