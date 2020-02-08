@@ -26,7 +26,7 @@ class ProductDetail extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {addedCart.length == 0 ?null : addedCart.map(addedData => {
+                    {addedCart.length === 0 ?null : addedCart.map(addedData => {
                       return (
                         <tr key={addedData.item_id} className="text-center">
                           <td className="product-remove">

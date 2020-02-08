@@ -14,7 +14,8 @@ import {
   GET_ATTRIBUTES,
   GET_PRODUCTS_ROW,
   SHIPPING_INFO, 
-  UPDATE_SHIPPING_INFO
+  UPDATE_SHIPPING_INFO,
+  LOGIN_SUCCESS
 } from "../Actions/Types";
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   oneProduct: {},
   allAttributes: [],
   productCount : 0,
-  shippingInfo:null
+  shippingInfo:null,
+  loggedIn: false
 };
 
 const ShopReducer = (state = initialState, action) => {
@@ -93,6 +95,9 @@ const ShopReducer = (state = initialState, action) => {
 
     case GET_ATTRIBUTES:
       return{...state, allAttributes: action.payload}
+
+    case LOGIN_SUCCESS:
+        return{...state, loggedIn: action.payload}
     default:
       return state;
   }

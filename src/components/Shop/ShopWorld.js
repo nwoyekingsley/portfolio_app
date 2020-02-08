@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {getallProducts} from '../Redux/Actions'
+// import Pagination from "react-js-pagination";
+// require("bootstrap/less/bootstrap.less");
 
 class ShopWorld extends Component {
   constructor(props) {

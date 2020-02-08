@@ -1,5 +1,6 @@
 import axios from "axios";
 import {apiUrl} from './../../Script/config'
+import {LOGIN_SUCCESS} from './Types'
 import Swal from "sweetalert2";
 
 
@@ -29,6 +30,11 @@ export const loginCustomer = (email, password) => {
         }).then(result => {
           
         });
+       
+        var data = response.data.Customer
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.AccessToken;
+       
+        dispatch(updateCustomer(data, password))
       })
       .catch(error => {
     
@@ -46,7 +52,6 @@ export const registerCustomer = (firstName, email, password) => {
   bodyFormData.set("password", password);
   console.log({firstName}, {email}, {password})
   return dispatch => {
-    // performing a post requst
     axios
       .post(apiUrl+"customers", bodyFormData)
       .then(response => {
@@ -56,6 +61,9 @@ export const registerCustomer = (firstName, email, password) => {
         else{
          
         }
+        var data = response.data.Customer
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.AccessToken;
+        dispatch(updateCustomer(data, password))
         
         // Handle the success
         console.log(response, "i am res 2");
@@ -75,6 +83,64 @@ export const registerCustomer = (firstName, email, password) => {
           
         });
         console.log(erro.response, "i am the err 2");
+      });
+  };
+};
+
+//Update a customer
+export const updateCustomer = (data, password) => {
+  let bodyFormData = new FormData();
+  bodyFormData.set("name", data.Name);
+  bodyFormData.set("email", data.Email);
+  return dispatch => {
+    axios
+      .put(apiUrl +
+        `customer?password=${password}&mob_phone=${data.MobPhone}`,
+        bodyFormData
+      )
+      .then(response => {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: true
+        })
+      })
+      .catch(error => {
+    
+        console.log(error, "i am the error 1");
+      });
+  };
+};
+
+//Get Customer address
+export const customerAddress = (address_1, address_2, city, region, postal_code, country, shipping_region_id ) => {
+  let bodyFormData = new FormData();
+  bodyFormData.set("Address_1", address_1);
+  bodyFormData.set("address_2", address_2);
+  bodyFormData.set("city", city);
+  bodyFormData.set("region", region);
+  bodyFormData.set("postal_code", postal_code);
+  bodyFormData.set("country", country);
+  bodyFormData.set("shipping_region_id", shipping_region_id );
+
+
+
+  return dispatch => {
+    axios
+      .put(apiUrl +
+        `customers/address`,
+        bodyFormData
+      )
+      .then(response => {
+        Swal.fire({
+          title: "Successful",
+          text: "Address saved successfully",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        })
+      })
+      .catch(error => {
+    
+        console.log(error, "i am the error 1");
       });
   };
 };
