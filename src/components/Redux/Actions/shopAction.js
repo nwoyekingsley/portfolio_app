@@ -8,6 +8,8 @@ import {
   PAYMENT_BANK,
   PAYMENT_CHECK,
   CHANGEPAYMENT_TYPES,
+  SHIPPING_INFO,
+  UPDATE_SHIPPING_INFO
 } from "./Types";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -217,6 +219,75 @@ export const clickedPayStack = () => {
   };
 };
 
+
+export const GetShipingInfo = () => {
+  
+  return dispatch => {
+    axios
+      .get(apiUrl +
+        "shipping"
+      )
+      .then(response => {
+        
+        dispatch({
+          type: SHIPPING_INFO,
+          payload: response.data
+        });
+      })
+      .catch(error => {
+    
+        console.log(error, "i am the error 1");
+      });
+  };
+};
+
+export const placeOrder = (cart_id,shipping_id, user ) => {
+  let bodyFormData = new FormData();
+  bodyFormData.set("cart_id", cart_id);
+  bodyFormData.set("shipping_id", shipping_id);
+  bodyFormData.set("tax_id", 2);
+
+  const options = {
+    headers: {'Authorization': 'Bearer '+user.AccessToken}
+  };
+  return dispatch => {
+    axios
+      .post(apiUrl +
+        "orders",
+        bodyFormData,options
+      )
+      .then(response => {
+        Swal.fire({
+          title: "Order status",
+          text: "Order placed successfully! Your order will be processed immediately!",
+          icon: "success",
+          showCancelButton: false,
+          cancelButtonColor: "#d33",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "COUTINUE",
+          cancelButtonText: ""
+        }).then(result => {
+          localStorage.setItem('cartId', null);
+        });
+      })
+      .catch(error => {
+    
+        console.log(error, "i am the error 1");
+      });
+  };
+};
+
+export const UpdateShipingInfo = (value) => {
+  
+  return dispatch => {
+    
+        dispatch({
+          type: UPDATE_SHIPPING_INFO,
+          payload: value
+        });
+      
+  };
+};
 // PAYMENT FOR MY BANK PLATFORM
 export const clickedPayBank = data => {
   return dispatch => {

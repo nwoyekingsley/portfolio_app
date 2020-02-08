@@ -6,8 +6,15 @@ import BillingDetails from "./BillingDetails";
 import Products from "../Home/Products";
 import Subscribe from "../Reusables/Subscribe";
 import Footer from "../Reusables/Footer";
+import { connect } from "react-redux";
+import  {getCartProducts, GetShipingInfo} from '../Redux/Actions'
+
 
 class About extends Component {
+  componentWillMount(){
+    this.props.getCartProducts()
+    this.props.GetShipingInfo()
+  }
   render() {
     return (
       <div>
@@ -22,5 +29,10 @@ class About extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+ 
+  return {
+  };
+};
 
-export default About;
+export default connect(mapStateToProps, {getCartProducts, GetShipingInfo})(About);

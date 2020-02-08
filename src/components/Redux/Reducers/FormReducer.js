@@ -2,6 +2,8 @@ import { GET_FORM_DETAIL } from '../Actions/Types'
 
 const initialState = {
   firstName: "",
+  loginEmail:'',
+  loginPassword:'',
   email: "",
   password: "",
   repeatPassword: "",

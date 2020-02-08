@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { apiUrl } from './../Script/config'
 import { countries } from './../countries';
-
+import Swal from "sweetalert2";
+import Modal from "react-bootstrap/Modal";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
   clickedPayStack,
@@ -14,7 +16,9 @@ import {
   loginCustomer,
   getFormData,
   registerCustomer,
-  checkPassword
+  checkPassword,
+  UpdateShipingInfo,
+  placeOrder
 } from "../Redux/Actions";
 
 class BillingDetails extends Component {
@@ -29,8 +33,67 @@ class BillingDetails extends Component {
       Cities: [],
       CountryID: '',
       StateID: '',
-      CityID: ''
+      CityID: '',
+      subTotal: 0,
+      total: 0,
+      shippingCost:0,
+      isOpen: false,
+      hideModal: true,
+      shippingId:null
     };
+  }
+
+  placeOrder = () => {
+    let cart_id = JSON.parse(localStorage.getItem('cartId'))
+    
+    let loginUser = JSON.parse(localStorage.getItem('loginAbuchiUser'))
+    console.log({loginUser})
+    if (loginUser == null){
+      Swal.fire({
+        title: "Warning",
+        text: "Loggin or register to proceed",
+        icon: "warning",
+        showCancelButton: false,
+        cancelButtonColor: "#d33",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "COUTINUE",
+        cancelButtonText: " "
+      }).then(result => {
+       
+      });
+    }else{
+      if (this.state.shippingId !=null){
+        this.props.placeOrder(cart_id,this.state.shippingId, loginUser )
+      }
+      else{
+        Swal.fire({
+          title: "Warning",
+          text: "You have to select a shipping method",
+          icon: "warning",
+          showCancelButton: false,
+          cancelButtonColor: "#d33",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "COUTINUE",
+          cancelButtonText: " "
+        }).then(result => {
+         
+        });
+      }
+    }
+    
+  };
+
+  hideModal = () => {
+    this.setState({isOpen: false})
+    this.setState({hideModal: true})
+  };
+
+  chooseShippingMethod(event){
+    let newSubtotal = this.props.shippingInfo.filter(p=>p.ShippingId == event.target.value)[0].ShippingCost
+    this.setState({shippingCost:newSubtotal})
+    console.log(newSubtotal)
+    this.props.UpdateShipingInfo(event.target.value)
+    this.setState({shippingId:event.target.value})
   }
   handleSwitchLogingRegister(value) {
     if (value == 'login') {
@@ -93,6 +156,40 @@ class BillingDetails extends Component {
 
   }
 
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps)
+    if (nextProps.addedCart.length > 0) {
+      let subTotal = 0.00
+      for (let i = 0; i < nextProps.addedCart.length; i++) {
+        subTotal += parseFloat(nextProps.addedCart[i].SubTotal);
+      }
+
+      return { subTotal: subTotal, total: subTotal + 1000 + prevState.shippingCost};
+    }
+    else return null;
+  }
+
+
+renderShiping(){
+  var items = [];
+  console.log(this.props.shippingInfo)
+  if (this.props.shippingInfo != undefined){
+    for (let i = 0; i < this.props.shippingInfo.length; i++) {
+      items.push(
+      <div key={i} className="form-group">
+          <div className="col-md-12">
+            <div className="radio">
+               <label><input type="radio" name="optradio" value={this.props.shippingInfo[i].ShippingId} checked={this.props.shippingInfo[i].isChecked} onChange={(event) => this.chooseShippingMethod(event)} className="mr-2"/> {this.props.shippingInfo[i].ShippingType}</label>
+            </div>
+          </div>
+        </div>)
+       
+              }
+              return items
+  }
+  
+}
   //country
   renderCountriesDropdownItems() {
     var items = [];
@@ -135,13 +232,13 @@ class BillingDetails extends Component {
     return items;
   }
   render() {
-    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword , mob_phone} = this.props;
+    const { loginPassword, loginEmail, paymentType, firstName, email, password, repeatPassword, mob_phone , Address_1} = this.props;
     return (
       <section className="ftco-section">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-10 ftco-animate">
-              
+
               <div className="login" style={{ display: this.state.showLogin }}>
                 <form className="user">
                   <div className="form-group">
@@ -236,12 +333,12 @@ class BillingDetails extends Component {
                     </div>
                   </div>
                   <div className="form-group row">
-                  <div className="col-sm-6 mb-3 mb-sm-0">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
                       <input
                         type="text"
                         className="form-control"
                         name='Address_1'
-                        value={email}
+                        value={Address_1}
                         id="exampleInputAddress"
                         aria-describedby="emailHelp"
                         placeholder="Enter Address..."
@@ -260,39 +357,39 @@ class BillingDetails extends Component {
                         onChange={(e) => this.props.getFormData({ props: e.target.name, value: e.target.value })}
                       />
                     </div>
-                    
-                    
-                    
+
+
+
                   </div>
                   <div className="form-group row">
-                  <div className="col-sm-6 mb-3 mb-sm-0">
-
-<select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
-  <option key={0}className="">Select country</option>
-  {this.renderCountriesDropdownItems()}
-</select>
-</div>
-                  <div className="col-md-6 ">
-
-<select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
-  <option key={0} className="">Select state</option>
-  {this.renderStatesDropdownItems()}
-</select>
-</div>
-                   
-                    </div>
-                    <div className="form-group row">
                     <div className="col-sm-6 mb-3 mb-sm-0">
-                    <select
+
+                      <select name="name" className="form-control" value={this.state.CountryID} onChange={(e) => this.handleCountryChange(e)}>
+                        <option key={0} className="">Select country</option>
+                        {this.renderCountriesDropdownItems()}
+                      </select>
+                    </div>
+                    <div className="col-md-6 ">
+
+                      <select name="name" className="form-control" value={this.state.StateID} onChange={(e) => this.handleStateChange(e)}>
+                        <option key={0} className="">Select state</option>
+                        {this.renderStatesDropdownItems()}
+                      </select>
+                    </div>
+
+                  </div>
+                  <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <select
                         name="city"
                         className="form-control"
                         value={this.state.CityID}
-                        onChange={(e) => {this.props.getFormData({ props: e.target.name, value: e.target.value });this.setState({CityID:e.target.value})} }>
+                        onChange={(e) => { this.props.getFormData({ props: e.target.name, value: e.target.value }); this.setState({ CityID: e.target.value }) }}>
                         <option key={0} className="">Select city</option>
                         {this.renderCitiesDropdownItems()}
                       </select>
                     </div>
-                    </div>
+                  </div>
                   <div className="form-group row">
                     <div className="col-sm-6 mb-3 mb-sm-0">
                       <input
@@ -347,23 +444,24 @@ class BillingDetails extends Component {
               <div className="row mt-5 pt-3 d-flex">
                 <div className="col-md-6 d-flex">
                   <div className="cart-detail cart-total bg-light p-3 p-md-4">
+                  <h3 className="billing-heading mb-4">Shipping Method</h3>
+                  {
+                        this.renderShiping()
+                      }
                     <h3 className="billing-heading mb-4">Cart Total</h3>
                     <p className="d-flex">
                       <span>Subtotal</span>
-                      <span>$20.60</span>
+                      <span>&#8358; {this.state.subTotal}</span>
                     </p>
                     <p className="d-flex">
-                      <span>Delivery</span>
-                      <span>$0.00</span>
+                      <span>Service charge</span>
+                      <span>&#8358; 1000.00</span>
                     </p>
-                    <p className="d-flex">
-                      <span>Discount</span>
-                      <span>$3.00</span>
-                    </p>
+
                     <hr />
                     <p className="d-flex total-price">
                       <span>Total</span>
-                      <span>$17.60</span>
+                      <span>&#8358; {this.state.total}</span>
                     </p>
                   </div>
                 </div>
@@ -372,83 +470,97 @@ class BillingDetails extends Component {
                     <h3 className="billing-heading mb-4">Payment Method</h3>
                     <div className="form-group">
                       <div className="col-md-12">
-                        <div className="radio">
+                        <div className="">
                           <label>
-                            <input
-                              type="radio"
+                            {/* <input
+                              type="text"
                               name="optradio"
                               className="mr-2"
                               onClick={() =>
                                 this.props.changePaymentTypes("clickedPayBank")
                               }
-                            />{" "}
-                            Direct Bank Tranfer
+                            />{" "} */}
+                            Payment Advisory:
+Kindly make payment into your preferred bank account number below.
                           </label>
                         </div>
                       </div>
                     </div>
                     <div className="form-group">
                       <div className="col-md-12">
-                        <div className="radio">
-                          <label>
-                            <input
-                              type="radio"
+                        <div className="">
+                          <label style={{ fontWeight: 'bold' }}>
+                            {/* <input
+                              type="text"
                               name="optradio"
                               className="mr-2"
                               onClick={() =>
                                 this.props.changePaymentTypes("clickedPayCheck")
                               }
-                            />{" "}
-                            Check Payment
+                            />{" "} */}
+                            Ecobank
+Abuchi Orji
+3273069643
                           </label>
                         </div>
                       </div>
                     </div>
                     <div className="form-group">
                       <div className="col-md-12">
-                        <div className="radio">
-                          <label>
-                            <input
-                              type="radio"
-                              name="optradio"
-                              className="mr-2"
-                              onClick={() =>
-                                this.props.changePaymentTypes("clickedPayStack")
-                              }
-                            />{" "}
-                            PayStack
+                        <div className="">
+                          <label style={{ fontWeight: 'bold' }}>
+                            {" "}
+                            GTBank
+ Abuchi Orji
+ 0041861401
                           </label>
                         </div>
                       </div>
                     </div>
+
                     <div className="form-group">
                       <div className="col-md-12">
                         <div className="checkbox">
                           <label>
-                            <input
+                            <p
                               type="checkbox"
                               defaultValue
-                              className="mr-2"
-                            />{" "}
-                            I have read and accept the terms and conditions
+                              className=""
+                              style={{ color: 'red', fontWeight: 'bold' }}>
+
+                              To enable us identify your order, kindly put your "Order reference code" generated when you click the "place order" button into the "Remarks, Reference or Purpose" tab provided by your bank.
+                            </p>
+
                           </label>
                         </div>
                       </div>
                     </div>
                     <p>
                       <Link
-                        to="#"
-                        onClick={() =>
-                          paymentType === "clickedPayStack"
-                            ? this.props.clickedPayStack()
-                            : ""
-                        }
+                       
+                        onClick={() => this.placeOrder()}
                         className="btn btn-primary py-3 px-4"
+                        
                       >
                         Place an order
                       </Link>
                     </p>
                   </div>
+                  {/* <Modal show={this.state.isOpen} >
+                    <Modal.Header>
+                      <Modal.Title>Shipping Option</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      {
+                        this.renderShiping()
+                      }
+                    
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button onClick={() => this.hideModal()}>Cancel</button>
+                      <button>Save</button>
+                    </Modal.Footer>
+                  </Modal> */}
                 </div>
               </div>
             </div>{" "}
@@ -461,9 +573,11 @@ class BillingDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  const { paymentType } = state.Shop;
+  const { paymentType, addedCart, shippingInfo } = state.Shop;
   const { firstName, email, password, repeatPassword, loginPassword, loginEmail, mob_phone } = state.Form;
+  
   return {
+    addedCart,
     paymentType,
     firstName,
     email,
@@ -471,7 +585,8 @@ const mapStateToProps = state => {
     repeatPassword,
     loginPassword,
     loginEmail,
-    mob_phone
+    mob_phone,
+    shippingInfo
   };
 };
 
@@ -482,5 +597,7 @@ export default connect(mapStateToProps, {
   changePaymentTypes,
   loginCustomer,
   getFormData,
-  registerCustomer
+  registerCustomer,
+  UpdateShipingInfo,
+  placeOrder
 })(BillingDetails);

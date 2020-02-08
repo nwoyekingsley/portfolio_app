@@ -1,4 +1,4 @@
-import { GET_PRODUCTS, GET_ONE_PRODUCT, ADD_TO_CART, GET_ATTRIBUTES } from "./Types";
+import { GET_PRODUCTS, GET_ONE_PRODUCT, ADD_TO_CART, GET_ATTRIBUTES, GET_PRODUCTS_ROW } from "./Types";
 import {apiUrl} from './../../Script/config'
 import axios from "axios";
 
@@ -17,6 +17,10 @@ export const getallProducts = (page,limit) => {
         dispatch({
           type: GET_PRODUCTS,
           payload: res.data.Rows
+        });
+        dispatch({
+          type: GET_PRODUCTS_ROW,
+          payload: res.data.TotalCount
         });
       })
       .catch(err => {

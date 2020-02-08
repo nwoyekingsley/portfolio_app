@@ -11,7 +11,10 @@ import {
   CHANGEPAYMENT_TYPES,
   GET_PRODUCTS,
   GET_ONE_PRODUCT,
-  GET_ATTRIBUTES
+  GET_ATTRIBUTES,
+  GET_PRODUCTS_ROW,
+  SHIPPING_INFO, 
+  UPDATE_SHIPPING_INFO
 } from "../Actions/Types";
 
 const initialState = {
@@ -22,7 +25,9 @@ const initialState = {
   paymentType: "",
   products: [],
   oneProduct: {},
-  allAttributes: []
+  allAttributes: [],
+  productCount : 0,
+  shippingInfo:null
 };
 
 const ShopReducer = (state = initialState, action) => {
@@ -54,6 +59,9 @@ const ShopReducer = (state = initialState, action) => {
     case PAYMENT_CHECK:
       return { ...state, paymentType: action.payload };
 
+    case GET_PRODUCTS_ROW:
+      return { ...state, productCount: action.payload};
+
     case CHANGEPAYMENT_TYPES:
       return { ...state, paymentType: action.payload };
 
@@ -62,6 +70,26 @@ const ShopReducer = (state = initialState, action) => {
 
     case GET_ONE_PRODUCT:
       return { ...state, oneProduct: action.payload };
+
+    case SHIPPING_INFO:
+      let newshiping = action.payload.map((item, i) => {
+                
+        item['isChecked'] = false;
+        return item;
+      })
+      return { ...state,shippingInfo:newshiping };
+
+    case UPDATE_SHIPPING_INFO:
+      let updateshiping = state.shippingInfo.map((item, i) => {
+        if (item.ShippingId == action.payload){
+          item.isChecked = true;
+        }
+        else{
+          item.isChecked = false;
+        }
+        return item;
+      })
+        return { ...state,shippingInfo:updateshiping };
 
     case GET_ATTRIBUTES:
       return{...state, allAttributes: action.payload}

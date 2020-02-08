@@ -131,8 +131,8 @@ Enugu
             <div className="col-md-12 text-center">
               <p>
                 {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                Copyright © All rights reserved {new Date().getFullYear() + " "} 
-                 <i className="icon-heart color-danger" aria-hidden="true" /> Powered by Abuchi { new Date().getFullYear()}
+                Copyright © Abuchi Orji 2019 - {new Date().getFullYear() + " "} 
+                 <i className=" color-danger" aria-hidden="true" /> 
                 
                 {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
               </p>

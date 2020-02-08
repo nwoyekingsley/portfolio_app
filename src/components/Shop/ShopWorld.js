@@ -4,13 +4,55 @@ import { connect } from "react-redux";
 import {getallProducts} from '../Redux/Actions'
 
 class ShopWorld extends Component {
-
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      page: 1,
+      limit : 20,
+      active:""
+    };
+  }
   componentWillMount() {
-    this.props.getallProducts();
+    const {page, limit} = this.state
+    this.props.getallProducts(page, limit);
   }  
+  renderBullet(){
+    const {page, limit} = this.state
+    let numberOfBullet = (Math.floor(this.props.productCount/20)) + (this.props.productCount%20 > 0?1:0)
+    let items = [];
+    for(let i= 0; i < numberOfBullet; i++){
+      if (i == 0){
+        items.push( <li key={i} onClick={() =>{this.props.getallProducts(i+1, limit); this.setState({page:i+1})}} className={this.state.active}><span>{i+1}</span></li>)
+      }
+      else{
+        items.push( <li key={i} onClick={() =>{this.props.getallProducts(i+1, limit);this.setState({page:i+1})}} className={this.state.active}><span>{i+1}</span></li>)
+      }
+    }
+  
+return items;
+  }
 
+  handlePrevios(){
+    const {page, limit} = this.state
+    if (page == 1){
+      
+      this.props.getallProducts(page, limit);
+    }
+    else{
+      this.setState({page: page- 1})
+      this.props.getallProducts(page - 1, limit);
+    }
+  }
+  handleNext(){
+    const {page, limit} = this.state
+    this.setState({page: page + 1})
+    this.props.getallProducts(page + 1, limit);
+  }
+ 
   render() {
     const { products } = this.props;
+    
     console.log(products)
     return (
       <section className="ftco-section bg-light">
@@ -21,7 +63,7 @@ class ShopWorld extends Component {
                   return (
                     <div
                       key={product.ProductId}
-                      className="col-sm col-md-6 col-lg-3 ftco-animate"
+                      className="col-sm col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated"
                     >
                       <div className="product">
                         <Link
@@ -86,35 +128,25 @@ class ShopWorld extends Component {
                 })
               : ""}
           </div>
-          {/* <div className="row mt-5">
+          <div className="row mt-5">
             <div className="col text-center">
               <div className="block-27">
                 <ul>
                   <li>
-                    <Link to="#">&lt;</Link>
+                    <Link onClick={() => this.handlePrevios()}>&lt;</Link>
                   </li>
-                  <li className="active">
-                    <span>1</span>
-                  </li>
+                  {
+                    this.renderBullet()
+                  }
+                  
+                  
                   <li>
-                    <Link to="#">2</Link>
-                  </li>
-                  <li>
-                    <Link to="#">3</Link>
-                  </li>
-                  <li>
-                    <Link to="#">4</Link>
-                  </li>
-                  <li>
-                    <Link to="#">5</Link>
-                  </li>
-                  <li>
-                    <Link to="#">&gt;</Link>
+                    <Link onClick={() => this.handleNext()}>&gt;</Link>
                   </li>
                 </ul>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </section>
     );
@@ -122,9 +154,10 @@ class ShopWorld extends Component {
 }
 
 const mapStateToProps = state => {
-  const { products } = state.Shop;
+  const { products, productCount} = state.Shop;
   return {
-    products
+    products,
+    productCount
   };
 };
 

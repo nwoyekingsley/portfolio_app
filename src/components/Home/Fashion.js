@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 class Fashion extends Component {
   render() {
     return (
-      <section className="ftco-section ftco-no-pb ftco-no-pt bg-light">
+      <section className="ftco-section ftco-no-pb ftco-no-pt bg-light" >
         <div className="container">
           <div className="row">
             <div
               className="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center"
-              style={{ backgroundImage: "url(sets/im/Asages/bg_2.jpeg)" }}
+              style={{ backgroundImage: "url(/Assets/images/bg_2.jpeg)" }}
             >
               {/* <Link
                 to="https://vimeo.com/45830194"
@@ -35,12 +35,12 @@ gifts and/or bliss.
                 </p>
                 <p>
                 We have a wide range of products available to “ship immediately” as well as other items that are
-“shipped from abroad”. Estimated time of arrival for “ship immediately” is 3 to 5 days while “shipped
-from abroad” is 15 to 25 days (Excluding weekends).
+“shipped from abroad”. Estimated time of arrival for “ship immediately” is 1 to 3days while “shipped
+from abroad” is 15 to 25days (Excluding weekends).
                 </p>
                 <p>
                 “Shipped from abroad” items will be shipped to the post office closest to your address while “ship
-immediately” items will be shipped through a pre-arranged channel. Kindly contact us through our
+immediately” items will be shipped through post office and EMS service. Kindly contact us through our
 contact info for more details (WhatsApp preferred).
                 </p>
                 <p>
