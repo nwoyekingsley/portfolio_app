@@ -33,9 +33,9 @@ class Products extends Component {
     const chosenProducts = [];
     const { products } = this.state;
     if (products.length> 0){
-
+      let random = Math.floor(Math.random()*(16+1)+1)
     
-      for (let i = 1; i < 5; i++) {
+      for (let i = random; i < random + 4; i++) {
         chosenProducts.push(
           <div
             key={products[i].ProductId}

@@ -12,7 +12,7 @@ const initialState = {
   region:"",
   postal_code:"",
   country:"",
-  shipping_region_id:"",
+  shipping_region_id:2,
   mob_phone:"",
   eve_phone:""
 };

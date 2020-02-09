@@ -29,7 +29,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        {/* <Script /> */}
+        <Script />
         
          
           <Navbar />

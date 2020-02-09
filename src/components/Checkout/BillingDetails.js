@@ -41,16 +41,16 @@ class BillingDetails extends Component {
       shippingCost:0,
       isOpen: false,
       hideModal: true,
-      shippingId:null
+      shippingId:null,
+      loginUser : null,
+      loggedIn: false
     };
   }
 
   placeOrder = () => {
     let cart_id = JSON.parse(localStorage.getItem('cartId'))
     
-    let loginUser = JSON.parse(localStorage.getItem('loginAbuchiUser'))
-    console.log({loginUser})
-    if (loginUser == null){
+    if (this.state.loginUser == null){
       Swal.fire({
         title: "Warning",
         text: "Loggin or register to proceed",
@@ -65,7 +65,7 @@ class BillingDetails extends Component {
       });
     }else{
       if (this.state.shippingId !=null){
-        this.props.placeOrder(cart_id,this.state.shippingId, loginUser )
+        this.props.placeOrder(cart_id,this.state.shippingId, this.state.loginUser )
       }
       else{
         Swal.fire({
@@ -85,10 +85,27 @@ class BillingDetails extends Component {
     
   };
 
-  hideModal = () => {
-    this.setState({isOpen: false})
-    this.setState({hideModal: true})
-  };
+  componentDidMount(){
+    let loginUserString = localStorage.getItem('loginAbuchiUser')
+    console.log(loginUserString)
+    if (loginUserString != "null" && loginUserString != null){
+      let loginUser = JSON.parse(loginUserString)
+      
+      let expiresIn = new Date(loginUser.expires_in)
+      let currentDate = new Date()
+      console.log(expiresIn, currentDate)
+      if (expiresIn >= currentDate){
+        this.setState({loggedIn: true})
+        this.setState({loginUser:loginUser})
+      }
+      else{
+        localStorage.setItem('loginAbuchiUser', null)
+        this.handleSwitchLogingRegister('Login')
+      }
+    }
+
+  }
+ 
 
   chooseShippingMethod(event){
     let newSubtotal = this.props.shippingInfo.filter(p=>p.ShippingId == event.target.value)[0].ShippingCost
@@ -97,6 +114,7 @@ class BillingDetails extends Component {
     this.props.UpdateShipingInfo(event.target.value)
     this.setState({shippingId:event.target.value})
   }
+
   handleSwitchLogingRegister(value) {
   
     if (value == 'login') {
@@ -140,12 +158,13 @@ class BillingDetails extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.loggedIn){
+  // componentWillReceiveProps(nextProps){
+  //   console.log({nextProps})
+  //   if(nextProps.loggedIn){
      
-      this.handleSwitchLogingRegister('checkout')
-    }
-  }
+  //     this.handleSwitchLogingRegister('checkout')
+  //   }
+  // }
 
   //handleCountryChange
   handleStateChange(event) {
@@ -172,15 +191,27 @@ class BillingDetails extends Component {
 
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps)
+    
+
     if (nextProps.addedCart.length > 0) {
       let subTotal = 0.00
       for (let i = 0; i < nextProps.addedCart.length; i++) {
         subTotal += parseFloat(nextProps.addedCart[i].SubTotal);
       }
+      let showLogin = prevState.showLogin,showRegistration = prevState.showRegistration, showCheckout = prevState.showCheckout
 
-      return { subTotal: subTotal, total: subTotal + 1000 + prevState.shippingCost};
+      if(prevState.loggedIn === true){
+      
+        
+          showLogin = 'none' ;
+          showRegistration ='none';
+          showCheckout ='block';
+       
+      }
+      console.log({nextProps})
+      return {loggedIn:nextProps.loggedIn, subTotal: subTotal, total: subTotal + 1000 + prevState.shippingCost,showLogin :showLogin, showRegistration:showRegistration,showCheckout:showCheckout };
     }
+    
     else return null;
   }
 
@@ -315,7 +346,7 @@ renderShiping(){
                         </Link>
                 </div>
                 <div className="text-center">
-                  <Link className="small" onClick={() => this.handleSwitchLogingRegister('register')} >
+                  <Link to='#' className="small" onClick={() => this.handleSwitchLogingRegister('register')} >
                     Create an Account!
                         </Link>
                 </div>
@@ -539,7 +570,7 @@ renderShiping(){
                     className="btn btn-primary btn-user btn-block"
                     onClick={e => {
                       e.preventDefault();
-                      this.props.customerAddress(address_1, address_2, this.state.StateID, region, postal_code, this.state.CountryID, shipping_region_id);
+                      this.props.customerAddress(address_1, address_2, this.state.StateID, region, postal_code, this.state.CountryID, shipping_region_id,this.state.loginUser );
                     }}
                   >
                    Save Address
@@ -575,15 +606,7 @@ renderShiping(){
                 <div className="col-md-6">
                   <div className="cart-detail bg-light p-3 p-md-4">
                     <h3 className="billing-heading mb-4">Payment Advisory</h3>
-                    <p> Kindly make payment into your preferred bank account number below. </p>
-                      <p> Bank Name: <b>Eco Bank </b> </p>
-                      <p> Account Name: <b> Abuchi Orji</b></p>
-                      <p> Account Number: <b> 3273069643</b> </p>
-                      <br/>
-                      <p> Bank Name:<b> GT Bank</b> </p>
-                      <p> Account Name: <b>Abuchi Orji</b></p>
-                      <p> Account Number: <b> 0041861404</b></p> 
-                      
+                   
 
                     <p> To enable us identify your order, put your <b> "Order reference code"</b> into the <b>"Remarks, Reference or Purpose"</b> tab provided by your bank</p>
                     {/* <div className="form-group">
@@ -662,7 +685,7 @@ Abuchi Orji
                       >
                         Place an order
                       </Link>
-                    </p> */}
+                    </p> 
                   </div>
                   {/* <Modal show={this.state.isOpen} >
                     <Modal.Header>
