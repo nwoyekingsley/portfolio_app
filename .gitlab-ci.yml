@@ -4,6 +4,9 @@ stages:
   - build
   - deploy
 
+variables:
+  CI: "false"
+
 cache:
   paths:
     - node_modules/
