@@ -15,5 +15,5 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "./../build", "index.html"));
 });
 //Running the server on Port 3000 default
-let PORT = 3002;
+let PORT = 3001;
 app.listen(PORT, () => {console.log(`App is running on Port ${PORT}`)});
