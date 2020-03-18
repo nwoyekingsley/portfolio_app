@@ -12,9 +12,9 @@ class Footer extends Component {
                 <h2 className="ftco-heading-2">Goterem</h2>
                 <ul className="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                   <li className="ftco-animate">
-                    <Link to="#">
+                    <a href="https://twitter.com/goteremonline">
                       <span className="icon-twitter" />
-                    </Link>
+                    </a>
                   </li>
                   <li className="ftco-animate">
                     <Link to="#">
@@ -22,9 +22,9 @@ class Footer extends Component {
                     </Link>
                   </li>
                   <li className="ftco-animate">
-                    <Link to="#">
+                    <a href="https://www.instagram.com/goteremonline/?hl=en">
                       <span className="icon-instagram" />
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </div>
